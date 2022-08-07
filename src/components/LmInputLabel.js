@@ -43,8 +43,6 @@ function LmInputLabel({
   labelName,
   isValid,
 }) {
-  console.log(errors);
-  console.log(isValid);
   return (
     <LmInputLabelWrapp>
       <LmLabel>{label}</LmLabel>

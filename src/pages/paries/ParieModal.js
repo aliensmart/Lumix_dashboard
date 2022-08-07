@@ -43,8 +43,6 @@ function ParieModal({ open, title, setOpen }) {
     },
   });
   const onSubmit = (data) => {
-    console.log(data);
-    console.log(state);
     let random = Math.random().toString(36).substring(2, 15);
     const betData = {
       betID: `parie_${random}`,

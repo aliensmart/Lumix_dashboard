@@ -1,55 +1,18 @@
-import { STATE_LOGIN, STATE_SIGNUP } from "./components/AuthForm";
-import { EmptyLayout, LayoutRoute, MainLayout } from "./components/Layout";
-import PageSpinner from "./components/PageSpinner";
-import AuthPage from "./pages/AuthPage";
 import React from "react";
 import componentQueries from "react-component-queries";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
 import "./styles/reduction.scss";
+import LumixRoute from "./LumixRoute";
 
-const DashboardPage = React.lazy(() => import("./pages/DashboardPage"));
-const UsersPage = React.lazy(() => import("./pages/UsersPage"));
-const Challengers = React.lazy(() => import("./pages/Challengers"));
-const Paries = React.lazy(() => import("./pages/Paries"));
+const queryClient = new QueryClient();
 
-const getBasename = () => {
-  return `/${process.env.PUBLIC_URL.split("/").pop()}`;
+const App = (props) => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <LumixRoute breakpoint={props.breakpoint} />
+    </QueryClientProvider>
+  );
 };
-
-class App extends React.Component {
-  render() {
-    return (
-      <BrowserRouter basename={getBasename()}>
-        <Switch>
-          {/* <LayoutRoute
-            exact
-            path="/login"
-            layout={EmptyLayout}
-            component={props => <AuthPage {...props} authState={STATE_LOGIN} />}
-          />
-          <LayoutRoute
-            exact
-            path="/signup"
-            layout={EmptyLayout}
-            component={props => (
-              <AuthPage {...props} authState={STATE_SIGNUP} />
-            )}
-          /> */}
-
-          <MainLayout breakpoint={this.props.breakpoint}>
-            <React.Suspense fallback={<PageSpinner />}>
-              <Route exact path="/" component={DashboardPage} />
-              <Route exact path="/users" component={UsersPage} />
-              <Route exact path="/challengers" component={Challengers} />
-              <Route exact path="/paries" component={Paries} />
-            </React.Suspense>
-          </MainLayout>
-          <Redirect to="/" />
-        </Switch>
-      </BrowserRouter>
-    );
-  }
-}
 
 const query = ({ width }) => {
   if (width < 575) {

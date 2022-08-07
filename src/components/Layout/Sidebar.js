@@ -5,6 +5,7 @@ import { MdDashboard, MdPortrait } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { Nav, Navbar, NavItem, NavLink as BSNavLink } from "reactstrap";
 import bn from "../../utils/bemnames";
+import styled from "styled-components";
 
 const sidebarBackground = {
   backgroundImage: `url("${sidebarBgImage}")`,
@@ -20,6 +21,13 @@ const navItems = [
 ];
 
 const bem = bn.create("sidebar");
+
+const LogOut = styled.div`
+  padding: 1rem;
+  &:hover {
+    cursor: pointer;
+  }
+`;
 
 class Sidebar extends React.Component {
   state = {
@@ -51,7 +59,7 @@ class Sidebar extends React.Component {
               className="pr-2"
               alt=""
             />
-            <span className="text-white">Company Name</span>
+            <span className="text-white">LUMIX</span>
           </Navbar>
           <Nav vertical>
             {navItems.map(({ to, name, exact, Icon }, index) => (
@@ -69,6 +77,15 @@ class Sidebar extends React.Component {
                 </BSNavLink>
               </NavItem>
             ))}
+            <NavItem
+              className={bem.e("nav-item")}
+              style={{ marginTop: "1rem" }}
+              onClick={() => console.log("se deconnecter")}
+            >
+              <LogOut>
+                <p>Se deconnecter</p>
+              </LogOut>
+            </NavItem>
           </Nav>
         </div>
       </aside>
