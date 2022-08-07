@@ -21,10 +21,6 @@ const Paries = () => {
     "Total parier",
   ];
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const options = {
     filterType: "dropdown",
     responsive: "scroll",
@@ -32,11 +28,7 @@ const Paries = () => {
 
   return (
     <Page title="Paries" breadcrumbs={[{ name: "Paries", active: true }]}>
-      <ParieModal
-        open={open}
-        handleClose={handleClose}
-        title={"Ajoutez une parie"}
-      />
+      <ParieModal open={open} setOpen={setOpen} title={"Ajoutez une parie"} />
       <Stack className="_lm-paries" spacing={3}>
         <Grid container justifyContent={"space-between"} alignItems={"center"}>
           <Grid item>

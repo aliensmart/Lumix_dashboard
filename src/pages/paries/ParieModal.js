@@ -13,14 +13,16 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
+import * as locales from "react-date-range/dist/locale";
 import { addDays } from "date-fns";
 import LmInputLabel from "../../components/LmInputLabel";
-import { DateRangePicker } from "react-date-range";
+import { DateRange, DateRangePicker } from "react-date-range";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-function ParieModal({ open, handleClose, title }) {
+function ParieModal({ open, title, setOpen }) {
+  const minDate = new Date();
   const [state, setState] = useState([
     {
       startDate: new Date(),
@@ -33,11 +35,35 @@ function ParieModal({ open, handleClose, title }) {
     formState: { errors, touchedFields },
     reset,
     handleSubmit,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      betName: "",
+      minBet: "500",
+      winnersNumber: "20",
+    },
+  });
   const onSubmit = (data) => {
     console.log(data);
     console.log(state);
-    reset();
+    let random = Math.random().toString(36).substring(2, 15);
+    const betData = {
+      betID: `parie_${random}`,
+      betName: data?.betName,
+      minBet: parseInt(data?.minBet),
+      winnersNumber: parseInt(data?.winnersNumber),
+      startsOn: state?.[0]?.startDate,
+      EndsOn: state?.[0]?.endDate,
+    };
+
+    reset({
+      betName: "",
+      minBet: "500",
+      winnersNumber: "20",
+    });
+    setOpen(false);
+  };
+  const handleClose = () => {
+    setOpen(false);
   };
   return (
     <Dialog
@@ -51,7 +77,12 @@ function ParieModal({ open, handleClose, title }) {
       <DialogTitle>Creez une Parie</DialogTitle>
       <DialogContent>
         <Stack spacing={3}>
-          <Grid container spacing={2}>
+          <Grid
+            container
+            spacing={2}
+            justifyContent="space-between"
+            alignItems={"stretch"}
+          >
             <Grid item lg={4} md={4} sm={12}>
               <LmInputLabel
                 label={"Nom du Parie"}
@@ -60,14 +91,14 @@ function ParieModal({ open, handleClose, title }) {
                 errors={errors}
                 isValid={touchedFields}
                 register={register}
-                registerObj={{ required: true, maxLength: 20, minLength: 3 }}
+                // registerObj={{ maxLength: 20, minLength: 3 }}
               />
             </Grid>
             <Grid item lg={4} md={4} sm={12}>
               <LmInputLabel
-                label={"Parie Minimum"}
+                label={"Parie Minimum en francs Cfa"}
                 desc={"Entrez le montant minimum de ce parie"}
-                labelName="MinBet"
+                labelName="minBet"
                 errors={errors}
                 isValid={touchedFields}
                 register={register}
@@ -97,13 +128,15 @@ function ParieModal({ open, handleClose, title }) {
                 Entrez le debut et la fin de votre jeux
               </span>
             </div>
-            <DateRangePicker
+            <DateRange
               onChange={(item) => setState([item.selection])}
               showSelectionPreview={true}
               moveRangeOnFirstSelection={false}
               months={2}
               ranges={state}
               direction="horizontal"
+              minDate={minDate}
+              locale={locales["fr"]}
             />
           </div>
         </Stack>
