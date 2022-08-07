@@ -1,25 +1,25 @@
-import logo200Image from '../../assets/img/logo/logo_200.png';
-import sidebarBgImage from '../../assets/img/logo/logo_200.png';
-import React from 'react';
-import { MdDashboard, MdPortrait } from 'react-icons/md';
-import { NavLink } from 'react-router-dom';
-import { Nav, Navbar, NavItem, NavLink as BSNavLink } from 'reactstrap';
-import bn from '../../utils/bemnames';
+import logo200Image from "../../assets/img/logo/logo_200.png";
+import sidebarBgImage from "../../assets/img/logo/logo_200.png";
+import React from "react";
+import { MdDashboard, MdPortrait } from "react-icons/md";
+import { NavLink } from "react-router-dom";
+import { Nav, Navbar, NavItem, NavLink as BSNavLink } from "reactstrap";
+import bn from "../../utils/bemnames";
 
 const sidebarBackground = {
   backgroundImage: `url("${sidebarBgImage}")`,
-  backgroundSize: 'cover',
-  backgroundRepeat: 'no-repeat',
+  backgroundSize: "cover",
+  backgroundRepeat: "no-repeat",
 };
 
 const navItems = [
-  { to: '/', name: 'dashboard', exact: true, Icon: MdDashboard },
-  { to: '/users', name: 'Utilisateurs', exact: false, Icon: MdPortrait },
-  { to: '/challengers', name: 'Challengeurs', exact: false, Icon: MdPortrait },
-  { to: '/challenges', name: 'Challenges', exact: false, Icon: MdPortrait },
+  { to: "/", name: "dashboard", exact: true, Icon: MdDashboard },
+  { to: "/users", name: "Utilisateurs", exact: false, Icon: MdPortrait },
+  { to: "/challengers", name: "Challengeurs", exact: false, Icon: MdPortrait },
+  { to: "/paries", name: "Paries", exact: false, Icon: MdPortrait },
 ];
 
-const bem = bn.create('sidebar');
+const bem = bn.create("sidebar");
 
 class Sidebar extends React.Component {
   state = {
@@ -28,8 +28,8 @@ class Sidebar extends React.Component {
     isOpenPages: true,
   };
 
-  handleClick = name => () => {
-    this.setState(prevState => {
+  handleClick = (name) => () => {
+    this.setState((prevState) => {
       const isOpen = prevState[`isOpen${name}`];
 
       return {
@@ -41,8 +41,8 @@ class Sidebar extends React.Component {
   render() {
     return (
       <aside className={bem.b()} data-image={sidebarBgImage}>
-        <div className={bem.e('background')} style={sidebarBackground} />
-        <div className={bem.e('content')}>
+        <div className={bem.e("background")} style={sidebarBackground} />
+        <div className={bem.e("content")}>
           <Navbar>
             <img
               src={logo200Image}
@@ -55,7 +55,7 @@ class Sidebar extends React.Component {
           </Navbar>
           <Nav vertical>
             {navItems.map(({ to, name, exact, Icon }, index) => (
-              <NavItem key={index} className={bem.e('nav-item')}>
+              <NavItem key={index} className={bem.e("nav-item")}>
                 <BSNavLink
                   id={`navItem-${name}-${index}`}
                   className="text-uppercase"
@@ -64,7 +64,7 @@ class Sidebar extends React.Component {
                   activeClassName="active"
                   exact={exact}
                 >
-                  <Icon className={bem.e('nav-item-icon')} />
+                  <Icon className={bem.e("nav-item-icon")} />
                   <span className="">{name}</span>
                 </BSNavLink>
               </NavItem>

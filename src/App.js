@@ -10,7 +10,7 @@ import "./styles/reduction.scss";
 const DashboardPage = React.lazy(() => import("./pages/DashboardPage"));
 const UsersPage = React.lazy(() => import("./pages/UsersPage"));
 const Challengers = React.lazy(() => import("./pages/Challengers"));
-const Challenges = React.lazy(() => import("./pages/Challenges"));
+const Paries = React.lazy(() => import("./pages/Paries"));
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split("/").pop()}`;
@@ -41,7 +41,7 @@ class App extends React.Component {
               <Route exact path="/" component={DashboardPage} />
               <Route exact path="/users" component={UsersPage} />
               <Route exact path="/challengers" component={Challengers} />
-              <Route exact path="/challenges" component={Challenges} />
+              <Route exact path="/paries" component={Paries} />
             </React.Suspense>
           </MainLayout>
           <Redirect to="/" />
