@@ -20,7 +20,7 @@ const getBasename = () => {
 function LumixRoute({ breakpoint }) {
   const { data } = useAuthQuery();
   const user = useAuthUser(["user"], auth);
-  console.log(user);
+  console.log(auth);
   return (
     <BrowserRouter basename={getBasename()}>
       <Switch>
