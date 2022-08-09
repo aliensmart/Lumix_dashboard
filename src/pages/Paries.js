@@ -3,6 +3,7 @@ import Page from "../components/Page";
 import MUIDataTable from "mui-datatables";
 import { Button, Grid, Stack } from "@mui/material";
 import ParieModal from "./paries/ParieModal";
+import { useBetsQuery } from "../hooks/useBetsQuery";
 
 /**
  * This will be the file where Admins can create new challenges
@@ -10,6 +11,8 @@ import ParieModal from "./paries/ParieModal";
  */
 const Paries = () => {
   const [open, setOpen] = useState(false);
+  const { data } = useBetsQuery();
+  console.log(data);
   const columns = [
     "Parie Id",
     "Nom",

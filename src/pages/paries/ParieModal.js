@@ -17,6 +17,7 @@ import * as locales from "react-date-range/dist/locale";
 import { addDays } from "date-fns";
 import LmInputLabel from "../../components/LmInputLabel";
 import { DateRange, DateRangePicker } from "react-date-range";
+import { addDocument, currentTime } from "../../services";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -30,6 +31,7 @@ function ParieModal({ open, title, setOpen }) {
       key: "selection",
     },
   ]);
+  const [loading, setLoading] = useState(false);
   const {
     register,
     formState: { errors, touchedFields },
@@ -42,7 +44,8 @@ function ParieModal({ open, title, setOpen }) {
       winnersNumber: "20",
     },
   });
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    setLoading(true);
     let random = Math.random().toString(36).substring(2, 15);
     const betData = {
       betID: `parie_${random}`,
@@ -50,15 +53,28 @@ function ParieModal({ open, title, setOpen }) {
       minBet: parseInt(data?.minBet),
       winnersNumber: parseInt(data?.winnersNumber),
       startsOn: state?.[0]?.startDate,
-      EndsOn: state?.[0]?.endDate,
+      endsOn: state?.[0]?.endDate,
+      status: "SCHEDULED",
+      beters: 0,
+      addedOn: currentTime(),
+      totalBet: 0,
     };
 
+    await addDocument("bets", betData);
+    setState([
+      {
+        startDate: new Date(),
+        endDate: addDays(new Date(), 7),
+        key: "selection",
+      },
+    ]);
+    setOpen(false);
+    setLoading(false);
     reset({
       betName: "",
       minBet: "500",
       winnersNumber: "20",
     });
-    setOpen(false);
   };
   const handleClose = () => {
     setOpen(false);
@@ -140,7 +156,9 @@ function ParieModal({ open, title, setOpen }) {
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleSubmit(onSubmit)}>Creez</Button>
+        <Button onClick={handleSubmit(onSubmit)} disabled={loading}>
+          Creez
+        </Button>
         <Button onClick={handleClose}>Fermez</Button>
       </DialogActions>
     </Dialog>

@@ -8,6 +8,7 @@ import {
   collection,
   addDoc,
   getDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import {
   getDownloadURL,
@@ -68,6 +69,10 @@ export const onLogin = async (email, password) => {
 
 export const onLogOut = async () => {
   return await signOut(auth);
+};
+
+export const currentTime = () => {
+  return Timestamp.now();
 };
 
 export const createDocFromId = async (collection, docId, data) => {
