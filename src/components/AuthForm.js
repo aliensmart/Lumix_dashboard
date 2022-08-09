@@ -1,7 +1,8 @@
 import logo200Image from "../assets/img/logo/logo_200.png";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
+import { onLogin } from "../services";
 
 const AuthForm = ({
   usernameLabel = "Email",
@@ -11,11 +12,21 @@ const AuthForm = ({
   },
   passwordLabel = "Mots de pass",
   passwordInputProps = {
-    type: "Mots de pass",
+    type: "password",
     placeholder: "Votre mots de pass",
   },
   children,
 }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const onLog = async (e) => {
+    console.log(password);
+    setLoading(true);
+    await onLogin(email, password);
+    setLoading(true);
+    e.preventDefault();
+  };
   return (
     <Form>
       <div className="text-center pb-4">
@@ -30,11 +41,17 @@ const AuthForm = ({
       </div>
       <FormGroup>
         <Label for={usernameLabel}>{usernameLabel}</Label>
-        <Input {...usernameInputProps} />
+        <Input
+          {...usernameInputProps}
+          onChange={(e) => setEmail(e.target.value)}
+        />
       </FormGroup>
       <FormGroup>
         <Label for={passwordLabel}>{passwordLabel}</Label>
-        <Input {...passwordInputProps} />
+        <Input
+          {...passwordInputProps}
+          onChange={(e) => setPassword(e.target.value)}
+        />
       </FormGroup>
       {/* <FormGroup check>
         <Label check>
@@ -47,9 +64,10 @@ const AuthForm = ({
         size="lg"
         className="bg-gradient-theme-left border-0"
         block
-        // onClick={this.handleSubmit}
+        onClick={onLog}
+        disabled={loading}
       >
-        Connectez Vous
+        {loading ? "Patientez SVP..." : "Connectez Vous"}
       </Button>
       {children}
     </Form>

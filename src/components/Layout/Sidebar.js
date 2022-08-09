@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom";
 import { Nav, Navbar, NavItem, NavLink as BSNavLink } from "reactstrap";
 import bn from "../../utils/bemnames";
 import styled from "styled-components";
+import { onLogOut } from "../../services";
 
 const sidebarBackground = {
   backgroundImage: `url("${sidebarBgImage}")`,
@@ -46,6 +47,10 @@ class Sidebar extends React.Component {
     });
   };
 
+  LogOut = () => {
+    onLogOut();
+  };
+
   render() {
     return (
       <aside className={bem.b()} data-image={sidebarBgImage}>
@@ -80,7 +85,7 @@ class Sidebar extends React.Component {
             <NavItem
               className={bem.e("nav-item")}
               style={{ marginTop: "1rem" }}
-              onClick={() => console.log("se deconnecter")}
+              onClick={this.LogOut}
             >
               <LogOut>
                 <p>Se deconnecter</p>
