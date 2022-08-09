@@ -1,20 +1,35 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  Timestamp,
+  collection,
+  addDoc,
+  getDoc,
+} from "firebase/firestore";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+} from "firebase/storage";
 import {
   createUserWithEmailAndPassword,
   getAuth,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyCTrUfspNgDUR3J2bjVQ90eiR7H0DT_2cU",
   authDomain: "lumix-91314.firebaseapp.com",
   projectId: "lumix-91314",
@@ -26,13 +41,25 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
-export const analytics = getAnalytics(app);
+
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
 
+export const colRef = (_colPath) => {
+  return collection(db, _colPath);
+};
+
+export const docReference = (_docPath) => {
+  return doc(db, _docPath);
+};
+
 export const onSignUp = async (email, password) => {
   return await createUserWithEmailAndPassword(auth, email, password);
+};
+
+export const onResetPass = async (email) => {
+  return await sendPasswordResetEmail(auth, email);
 };
 
 export const onLogin = async (email, password) => {
@@ -41,4 +68,34 @@ export const onLogin = async (email, password) => {
 
 export const onLogOut = async () => {
   return await signOut(auth);
+};
+
+export const createDocFromId = async (collection, docId, data) => {
+  let docRef = doc(db, collection, docId);
+  return await setDoc(docRef, data);
+};
+
+export const docRef = (_path) => {
+  return doc(db, _path);
+};
+export const addDocument = async (colName, data) => {
+  const colRef = collection(db, colName);
+  return await addDoc(colRef, data);
+};
+
+export const getDocById = async (_path) => {
+  const docRef = doc(db, _path);
+  return await getDoc(docRef);
+};
+
+export const addOrUpdate = async (_path, _data) => {
+  return await setDoc(docReference(_path), _data, { merge: true });
+};
+
+export const saveMediaToStorage = async (media, path) => {
+  const storageRef = ref(storage, path);
+  const response = await fetch(media);
+  const blob = await response.blob();
+  const task = await uploadBytesResumable(storageRef, blob);
+  return await getDownloadURL(task.ref);
 };
