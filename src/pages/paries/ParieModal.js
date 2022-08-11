@@ -9,7 +9,7 @@ import {
   Slide,
   Stack,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
@@ -17,20 +17,15 @@ import * as locales from "react-date-range/dist/locale";
 import { addDays } from "date-fns";
 import LmInputLabel from "../../components/LmInputLabel";
 import { DateRange, DateRangePicker } from "react-date-range";
-import { addDocument, currentTime } from "../../services";
+import { addDocument, colRef, currentTime } from "../../services";
+import { getDocs, orderBy, query, where } from "firebase/firestore";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 function ParieModal({ open, title, setOpen }) {
-  const minDate = new Date();
-  const [state, setState] = useState([
-    {
-      startDate: new Date(),
-      endDate: addDays(new Date(), 7),
-      key: "selection",
-    },
-  ]);
+  const [minDate, setMinDate] = useState(new Date());
+  const [state, setState] = useState();
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -44,6 +39,43 @@ function ParieModal({ open, title, setOpen }) {
       winnersNumber: "20",
     },
   });
+
+  useEffect(() => {
+    const checkOverluping = async () => {
+      const ref2 = query(
+        colRef("bets"),
+        where("endsOn", ">=", new Date()),
+        orderBy("endsOn", "desc")
+      );
+
+      let docs2 = await getDocs(ref2);
+      console.log(docs2);
+      let dateRange = [];
+      if (docs2?.empty) {
+        dateRange.push({
+          startDate: new Date(),
+          endDate: addDays(new Date(), 7),
+          key: "selection",
+        });
+      } else {
+        let latestDoc = docs2?.docs[0]?.data();
+        console.log(latestDoc);
+
+        let startDate = addDays(latestDoc?.endsOn?.toDate(), 2);
+        setMinDate(startDate);
+        // dateRange = [
+        //   {
+        //     startDate: startDate,
+        //     endDate: addDays(startDate, 7),
+        //     key: "selection",
+        //   },
+        // ];
+      }
+      // setState(dateRange);
+      // return await getDocs(ref);
+    };
+    checkOverluping();
+  }, []);
   const onSubmit = async (data) => {
     setLoading(true);
     let random = Math.random().toString(36).substring(2, 15);
