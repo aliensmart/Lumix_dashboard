@@ -2,24 +2,105 @@ import React from "react";
 import Page from "../components/Page";
 import { Card, CardBody, CardHeader, Col, Row } from "reactstrap";
 import MUIDataTable from "mui-datatables";
-import { useGetUsersQuery } from "../hooks/useGetUsersQuery";
-const UsersPage = () => {
-  const { data } = useGetUsersQuery();
-  console.log(data);
-  const columns = [
-    "profile",
-    "id",
-    "Nom Complet",
-    "email",
-    "Numero De Telephone",
-    "montant disponible",
-    "total Jouer",
-    "code de devise",
-    "Nombre de perte",
-    "Nombre de gain",
-    "Action",
-  ];
+import { useAllUsersQuery } from "../hooks/useAllUsersQuery";
+import { TABLE_TRANSLATE } from "../utils/constants";
+import CustomToolbarOption from "./users/CustomToolbarOption";
 
+// https://github.com/gregnb/mui-datatables#demo
+const UsersPage = () => {
+  const { data } = useAllUsersQuery();
+  console.log(data);
+
+  const columns = [
+    {
+      name: "id",
+      label: "Id",
+      options: {
+        filter: true,
+        sort: true,
+        setCellProps: () => ({ style: { minWidth: "10rem" } }),
+      },
+    },
+    {
+      name: "fullName",
+      label: "Nom Complete",
+      options: {
+        filter: true,
+        sort: true,
+        setCellProps: () => ({
+          style: {
+            minWidth: "15rem",
+            padding: "16px 26px",
+            textAlign: "left",
+            whiteSpace: "nowrap",
+          },
+        }),
+      },
+    },
+    {
+      name: "email",
+      label: "EMAIL",
+      options: {
+        filter: true,
+        sort: false,
+        setCellProps: () => ({
+          style: {
+            textAlign: "left",
+            whiteSpace: "nowrap",
+          },
+        }),
+      },
+    },
+
+    {
+      name: "phoneNumber",
+      label: "NUMERO DE TELEPHONE",
+      options: {
+        filter: true,
+        sort: false,
+        setCellProps: () => ({
+          style: {
+            minWidth: "15rem",
+            padding: "16px 26px",
+            textAlign: "left",
+            whiteSpace: "nowrap",
+          },
+        }),
+      },
+    },
+    {
+      name: "availableAmount",
+      label: "Montant Disponible",
+      options: {
+        filter: true,
+        sort: true,
+        setCellProps: () => ({
+          style: {
+            minWidth: "15rem",
+            padding: "16px 26px",
+            textAlign: "left",
+            whiteSpace: "nowrap",
+          },
+        }),
+      },
+    },
+    {
+      name: "totalGamed",
+      label: "Total Jouer",
+      options: {
+        filter: true,
+        sort: true,
+        setCellProps: () => ({
+          style: {
+            minWidth: "15rem",
+            padding: "16px 26px",
+            textAlign: "left",
+            whiteSpace: "nowrap",
+          },
+        }),
+      },
+    },
+  ];
   const onError = (err) => {
     console.log(err);
   };
@@ -31,10 +112,28 @@ const UsersPage = () => {
     console.log(rowData);
     console.log(rowMeta);
   };
+  const handleRowSelectionChange = (
+    currentRowsSelected,
+    allRowsSelected,
+    rowsSelected
+  ) => {
+    console.log(currentRowsSelected);
+    console.log(allRowsSelected);
+    console.log(rowsSelected);
+  };
 
   const options = {
     filterType: "dropdown",
+    responsive: "standard",
     onRowClick: handleRowClicked,
+    setCellProps: () => ({
+      style: { minWidth: "15rem", padding: "16px 26px", textAlign: "left" },
+    }),
+    onRowSelectionChange: handleRowSelectionChange,
+    customToolbarSelect: ({ displayData }) => (
+      <CustomToolbarOption displayData={displayData} />
+    ),
+    ...TABLE_TRANSLATE,
   };
   return (
     <Page
@@ -49,7 +148,7 @@ const UsersPage = () => {
             <CardBody>
               <MUIDataTable
                 title={"List des Utilisateurs"}
-                // data={data}
+                data={data}
                 columns={columns}
                 options={options}
               />
