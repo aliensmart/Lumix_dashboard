@@ -15,6 +15,7 @@ export const useAllUsersQuery = (onSuccess, onError) => {
     {
       subscribe: true, // or undefined
       includeMetadataChanges: true,
+      source: "cache",
     },
     {
       onSuccess,

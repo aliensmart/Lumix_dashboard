@@ -14,6 +14,7 @@ export const useSingleUserPariesQuery = (userId, onSuccess, onError) => {
     {
       subscribe: true, // or undefined
       includeMetadataChanges: true,
+      source: "cache",
     },
     {
       onSuccess,

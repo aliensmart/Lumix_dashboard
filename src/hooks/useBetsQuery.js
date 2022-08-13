@@ -8,7 +8,8 @@ export const useBetsQuery = (onSuccess, onError) => {
     ["allParies"],
     ref,
     {
-      subscribe: true, // or undefined
+      subscribe: true,
+      source: "cache", // or undefined
     },
     {
       onSuccess,
