@@ -3,13 +3,21 @@ import componentQueries from "react-component-queries";
 import { QueryClient, QueryClientProvider } from "react-query";
 import "./styles/reduction.scss";
 import LumixRoute from "./LumixRoute";
+import { MainLayout } from "./components/Layout";
+import PageSpinner from "./components/PageSpinner";
+import { BrowserRouter } from "react-router-dom";
 
 const queryClient = new QueryClient();
+const getBasename = () => {
+  return `/${process.env.PUBLIC_URL.split("/").pop()}`;
+};
 
 const App = (props) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <LumixRoute breakpoint={props.breakpoint} />
+      <BrowserRouter basename={getBasename()}>
+        <LumixRoute breakpoint={props.breakpoint} />
+      </BrowserRouter>
     </QueryClientProvider>
   );
 };

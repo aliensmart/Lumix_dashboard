@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Page from "../components/Page";
 import { Card, CardBody, CardHeader, Col, Row } from "reactstrap";
 import MUIDataTable from "mui-datatables";
@@ -9,7 +9,7 @@ import CustomToolbarOption from "./users/CustomToolbarOption";
 // https://github.com/gregnb/mui-datatables#demo
 const UsersPage = () => {
   const { data } = useAllUsersQuery();
-  console.log(data);
+  const [selectedDevId, setSelectedDevId] = useState();
 
   const columns = [
     {
@@ -101,12 +101,6 @@ const UsersPage = () => {
       },
     },
   ];
-  const onError = (err) => {
-    console.log(err);
-  };
-  const onSuccess = (s) => {
-    console.log(s);
-  };
 
   const handleRowClicked = (rowData, rowMeta) => {
     console.log(rowData);
@@ -117,21 +111,21 @@ const UsersPage = () => {
     allRowsSelected,
     rowsSelected
   ) => {
-    console.log(currentRowsSelected);
-    console.log(allRowsSelected);
-    console.log(rowsSelected);
+    const userId = data[currentRowsSelected?.[0]?.dataIndex]?.id;
+    setSelectedDevId(userId);
   };
 
   const options = {
     filterType: "dropdown",
     responsive: "standard",
+    selectableRows: "single",
     onRowClick: handleRowClicked,
     setCellProps: () => ({
       style: { minWidth: "15rem", padding: "16px 26px", textAlign: "left" },
     }),
     onRowSelectionChange: handleRowSelectionChange,
     customToolbarSelect: ({ displayData }) => (
-      <CustomToolbarOption displayData={displayData} />
+      <CustomToolbarOption displayData={displayData} userId={selectedDevId} />
     ),
     ...TABLE_TRANSLATE,
   };

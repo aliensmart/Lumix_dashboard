@@ -25,7 +25,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 function ParieModal({ open, title, setOpen }) {
   const [minDate, setMinDate] = useState(new Date());
-  const [state, setState] = useState();
+  const [state, setState] = useState([
+    {
+      startDate: new Date(),
+      endDate: addDays(new Date(), 7),
+      key: "selection",
+    },
+  ]);
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -61,7 +67,7 @@ function ParieModal({ open, title, setOpen }) {
         let latestDoc = docs2?.docs[0]?.data();
         console.log(latestDoc);
 
-        let startDate = addDays(latestDoc?.endsOn?.toDate(), 2);
+        let startDate = addDays(latestDoc?.endsOn?.toDate(), 1);
         setMinDate(startDate);
         // dateRange = [
         //   {
