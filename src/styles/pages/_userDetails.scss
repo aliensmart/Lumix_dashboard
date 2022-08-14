@@ -1,0 +1,16 @@
+._alm-userPage {
+  &-details {
+    background-color: rgba($color: #fc5c7d, $alpha: 0.3);
+    min-height: 100vh;
+  }
+  &-histories {
+    &__wrapper {
+      &--bets {
+        margin-top: 2rem;
+      }
+      &--trans {
+        margin-top: 2rem;
+      }
+    }
+  }
+}
