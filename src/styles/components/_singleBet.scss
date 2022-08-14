@@ -4,6 +4,7 @@
   transition: all 0.5s;
   display: flex;
   flex-direction: column;
+  border-radius: 5px;
   gap: 1rem;
   &:hover {
     cursor: pointer;
@@ -16,6 +17,7 @@
     display: flex;
     margin-bottom: 0.5rem;
     gap: 2rem;
+    align-items: center;
     &--info {
       display: flex;
       flex-grow: 3;
@@ -42,7 +44,7 @@
 
       p {
         font-weight: 600;
-        color: adjust-hue($color: #3a3434, $degrees: 0.5);
+        color: adjust-hue($color: #3a3434, $degrees: 60);
       }
     }
   }

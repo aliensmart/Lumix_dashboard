@@ -8,6 +8,26 @@ import {
   ArrowUpIcon,
   HorizArrowsIcon,
 } from "../../components/Icons";
+import styled from "styled-components";
+
+const StatusIcon = styled.div`
+  background-color: ${({ status }) =>
+    status === "WON" ? "#00C851" : status === "LOST" ? "#FF4444" : "#FFBB33"};
+
+  width: 4rem;
+  height: 4rem;
+  text-align: center;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const StatusText = styled.p`
+  color: ${({ status }) =>
+    status === "WON" ? "#00C851" : status === "LOST" ? "#FF4444" : "#FFBB33"};
+  font-weight: 600;
+  filter: brightness(0.6);
+`;
 
 const SingleBet = ({ parieDetail }) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -42,7 +62,8 @@ const SingleBet = ({ parieDetail }) => {
       className="singleParie"
     >
       <div className="singleParie-top">
-        <div className="singleParie-top--icon">{renderStatus()}</div>
+        <StatusIcon status={parieDetail?.status}>{renderStatus()}</StatusIcon>
+        <div className="singleParie-top--icon"></div>
         <div className="singleParie-top--info">
           <p>{parieDetail?.gameName}</p>
           <p>{parieDetail?.totalParied} Francs</p>
@@ -72,7 +93,7 @@ const SingleBet = ({ parieDetail }) => {
         </div>
       )}
       <div className="singleParie-status">
-        <p>{renderGameType()}</p>
+        <StatusText status={parieDetail?.status}>{renderGameType()}</StatusText>
       </div>
     </div>
   );
