@@ -4,20 +4,23 @@ import { useParams } from "react-router-dom";
 import Page from "../components/Page";
 import { useSingleUserPariesQuery } from "../hooks/useSingleUserPariesQuery";
 import { useSingleUserQuery } from "../hooks/useSingleUserQuery";
+import UserDetails from "./userPage/UserDetails";
 import UserHistory from "./userPage/UserHistory";
 
 const UserPage = () => {
   const { userId } = useParams();
-  const data = useSingleUserQuery(userId);
+  const { data: userDetails } = useSingleUserQuery(userId);
   const betData = useSingleUserPariesQuery(userId);
   console.log(userId);
-  console.log(data);
+  console.log(userDetails);
   console.log(betData);
   return (
     <Page className={"_alm-userPage"}>
       <Grid container spacing={3}>
-        <Grid item flexBasis={"30%"} className={"_alm-userPage-details"}></Grid>
-        <Grid item flexBasis={"70%"} className={"_alm-userPage-histories"}>
+        <Grid item flexBasis={"25rem"} className={"_alm-userPage-details"}>
+          <UserDetails userData={userDetails} />
+        </Grid>
+        <Grid item flexGrow={3} className={"_alm-userPage-histories"}>
           <UserHistory bets={betData?.data} />
         </Grid>
       </Grid>

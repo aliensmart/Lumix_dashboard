@@ -1,5 +1,4 @@
 import React from "react";
-import Collapse from "@kunukn/react-collapse";
 
 const UserTransactions = ({ value, index }) => {
   return (
