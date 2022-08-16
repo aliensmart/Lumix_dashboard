@@ -5,7 +5,7 @@ const UserTransactions = ({ value, index }) => {
     <>
       {value === index && (
         <div className={"_alm-userPage-histories__wrapper--trans"}>
-          transactions
+          Pas de transactions
         </div>
       )}
     </>

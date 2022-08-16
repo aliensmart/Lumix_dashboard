@@ -3,7 +3,6 @@ import empty from "../../assets/empty.jpg";
 import { renderDate } from "../../utils/helpers";
 
 const UserDetails = ({ userData }) => {
-  const { fullName, profile, ...details } = userData;
   return (
     <div className="_alm-userPage-details__wrapper">
       <div className="_alm-userPage-details__wrapper-info">
