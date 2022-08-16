@@ -1,7 +1,7 @@
 import logo200Image from "../../assets/img/logo/logo_200.png";
 import sidebarBgImage from "../../assets/img/logo/logo_200.png";
 import React from "react";
-import { MdDashboard, MdPortrait } from "react-icons/md";
+import { MdDashboard, MdPortrait, MdMonetizationOn } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { Nav, Navbar, NavItem, NavLink as BSNavLink } from "reactstrap";
 import bn from "../../utils/bemnames";
@@ -17,8 +17,7 @@ const sidebarBackground = {
 const navItems = [
   { to: "/", name: "dashboard", exact: true, Icon: MdDashboard },
   { to: "/users", name: "Utilisateurs", exact: false, Icon: MdPortrait },
-  { to: "/challengers", name: "Challengeurs", exact: false, Icon: MdPortrait },
-  { to: "/paries", name: "Paries", exact: false, Icon: MdPortrait },
+  { to: "/paries", name: "Paries", exact: false, Icon: MdMonetizationOn },
 ];
 
 const bem = bn.create("sidebar");
@@ -74,8 +73,6 @@ class Sidebar extends React.Component {
                   className="text-uppercase"
                   tag={NavLink}
                   to={to}
-                  // activeClassName="active"
-                  // exact={exact}
                 >
                   <Icon className={bem.e("nav-item-icon")} />
                   <span className="">{name}</span>

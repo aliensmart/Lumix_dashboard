@@ -53,12 +53,7 @@ const AuthForm = ({
           onChange={(e) => setPassword(e.target.value)}
         />
       </FormGroup>
-      {/* <FormGroup check>
-        <Label check>
-          <Input type="checkbox" />{" "}
-          {this.isSignup ? "Agree the terms and policy" : "Remember me"}
-        </Label>
-      </FormGroup> */}
+
       <hr />
       <Button
         size="lg"
