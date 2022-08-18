@@ -1,153 +1,189 @@
 import Page from "../components/Page";
-import ProductMedia from "../components/ProductMedia";
-import UserProgressTable from "../components/UserProgressTable";
-import { IconWidget, NumberWidget } from "../components/Widget";
-import { productsData, userProgressTableData } from "../demos/dashboardPage";
 import React from "react";
-import { MdPersonPin, MdRateReview, MdShare, MdThumbUp } from "react-icons/md";
-import {
-  Badge,
-  Button,
-  Card,
-  CardBody,
-  CardDeck,
-  CardGroup,
-  CardHeader,
-  CardTitle,
-  Col,
-  ListGroup,
-  ListGroupItem,
-  Row,
-} from "reactstrap";
-import { getColor } from "../utils/colors";
+import { Avatar, Grid, Button, Stack } from "@mui/material";
+import { useCurrentAdmin } from "../hooks/useCurrentAdmin";
+import empty from "../assets/empty.jpg";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { addOrUpdate, storage } from "../services";
 
-const today = new Date();
-const lastWeek = new Date(
-  today.getFullYear(),
-  today.getMonth(),
-  today.getDate() - 7
-);
+// const today = new Date();
+// const lastWeek = new Date(
+//   today.getFullYear(),
+//   today.getMonth(),
+//   today.getDate() - 7
+// );
 
-class DashboardPage extends React.Component {
-  componentDidMount() {
-    // this is needed, because InfiniteCalendar forces window scroll
-    window.scrollTo(0, 0);
-  }
+const DashboardPage = () => {
+  // componentDidMount() {
+  //   // this is needed, because InfiniteCalendar forces window scroll
+  //   window.scrollTo(0, 0);
+  // }
 
-  render() {
-    const primaryColor = getColor("primary");
+  const adminId = "ETAIhJjsyEhIrRXOJ9Or3g0NJ7E3";
 
-    return (
-      <Page
-        className="DashboardPage"
-        title="Dashboard"
-        breadcrumbs={[{ name: "Dashboard", active: true }]}
-      >
-        <Row>
-          <Col lg={4} md={6} sm={6} xs={12}>
-            <NumberWidget
-              title="Monthly Visitors"
-              subtitle="This month"
-              number="5,400"
-              color="secondary"
-              progress={{
-                value: 45,
-                label: "Last month",
-              }}
+  const { data } = useCurrentAdmin("ETAIhJjsyEhIrRXOJ9Or3g0NJ7E3");
+  console.log(data);
+
+  const handleUpload = async (e) => {
+    console.log(e);
+    const file = e.target.files[0];
+    console.log(file);
+    const storageRef = ref(storage, `admins/${adminId}/profile/${file.name}`);
+    const uploadTask = await uploadBytes(storageRef, file);
+    console.log(uploadTask);
+    const downloaUrl = await getDownloadURL(uploadTask.ref);
+
+    addOrUpdate(`admins/${adminId}`, { profile: downloaUrl });
+
+    e.persist();
+  };
+
+  return (
+    <Page
+      className="DashboardPage"
+      title="Dashboard"
+      breadcrumbs={[{ name: "Dashboard", active: true }]}
+    >
+      {/* <Row>
+          <Col></Col>
+        </Row> */}
+
+      <Grid container spacing={1} direction="row">
+        <Grid
+          item
+          sx={{ minWidth: "210px" }}
+          flexBasis={"20%"}
+          container
+          spacing={2}
+          direction="column"
+          xs={12}
+          sm={4}
+        >
+          <Grid item>
+            {data?.profile ? (
+              <Avatar
+                alt={data?.fullName}
+                src={data?.profile}
+                sx={{ width: 200, height: 200 }}
+              />
+            ) : (
+              <Avatar
+                alt={data?.fullName}
+                src={empty}
+                sx={{ width: 200, height: 200 }}
+              />
+            )}
+          </Grid>
+          <Grid item>
+            {" "}
+            <input
+              type={"file"}
+              hidden
+              id="admin_imUp"
+              onChange={handleUpload}
+              accept="image/png, image/jpeg, image/jpg"
+              multiple={false}
             />
-          </Col>
-
-          <Col lg={4} md={6} sm={6} xs={12}>
-            <NumberWidget
-              title="New Users"
-              subtitle="This month"
-              number="3,400"
-              color="secondary"
-              progress={{
-                value: 90,
-                label: "Last month",
+            <Button
+              variant="contained"
+              onClick={() => {
+                document.querySelector("#admin_imUp").click();
               }}
-            />
-          </Col>
-
-          <Col lg={4} md={6} sm={6} xs={12}>
-            <NumberWidget
-              title="Bounce Rate"
-              subtitle="This month"
-              number="38%"
-              color="secondary"
-              progress={{
-                value: 60,
-                label: "Last month",
-              }}
-            />
-          </Col>
-        </Row>
-
-        <CardGroup style={{ marginBottom: "1rem" }}>
+            >
+              {data?.profile ? "Changez de" : "Ajoutez une"} photo
+            </Button>
+          </Grid>
+        </Grid>
+        <Grid
+          item
+          container
+          spacing={2}
+          direction="column"
+          flexGrow={3}
+          flexBasis={"70%"}
+          sx={{ minWidth: "none" }}
+          xs={12}
+          sm={8}
+        >
+          <Grid item>
+            <p>
+              <strong>Nom Complet: </strong>
+              {data?.fullName}
+            </p>
+          </Grid>
+          <Grid item>
+            <p>
+              <strong>Email: </strong>
+              {data?.email}
+            </p>
+          </Grid>
+          <Grid item>
+            <p>
+              <strong>Numero de Tel: </strong>
+              {data?.phoneNumber}
+            </p>
+          </Grid>
+          <Grid item>
+            <p>
+              <strong>Ville: </strong>
+              {data?.city}
+            </p>
+          </Grid>
+          <Grid item>
+            <p>
+              <strong>Pays: </strong>
+              {data?.country}
+            </p>
+          </Grid>
+        </Grid>
+      </Grid>
+      {/* <CardGroup style={{ marginBottom: "1rem" }}>
           <IconWidget
             bgColor="white"
             inverse={false}
-            icon={MdThumbUp}
-            title="50+ Likes"
-            subtitle="People you like"
+            icon={MdDownload}
+            title="50+ Telechargement"
+            subtitle="Sur IOS"
+          />
+          <IconWidget
+            bgColor="white"
+            inverse={false}
+            icon={MdOutlineStarRate}
+            title="2.5 sur 5"
+            subtitle="Sur IOS"
           />
           <IconWidget
             bgColor="white"
             inverse={false}
             icon={MdRateReview}
-            title="10+ Reviews"
-            subtitle="New Reviews"
+            title="50+ commentaire"
+            subtitle="Sur IOS"
+          />
+        </CardGroup>
+        <CardGroup style={{ marginBottom: "1rem" }}>
+          <IconWidget
+            bgColor="white"
+            inverse={false}
+            icon={MdDownload}
+            title="50+ Telechargement"
+            subtitle="Sur Android"
           />
           <IconWidget
             bgColor="white"
             inverse={false}
-            icon={MdShare}
-            title="30+ Shares"
-            subtitle="New Shares"
+            icon={MdOutlineStarRate}
+            title="2.5 sur 5"
+            subtitle="Sur Android"
           />
-        </CardGroup>
-
-        <Row>
-          <Col md="6" sm="12" xs="12">
-            <Card>
-              <CardHeader>New Challenges</CardHeader>
-              <CardBody>
-                {productsData.map(
-                  ({ id, image, title, description, right }) => (
-                    <ProductMedia
-                      key={id}
-                      image={image}
-                      title={title}
-                      description={description}
-                      right={right}
-                    />
-                  )
-                )}
-              </CardBody>
-            </Card>
-          </Col>
-
-          <Col md="6" sm="12" xs="12">
-            <Card>
-              <CardHeader>New Users</CardHeader>
-              <CardBody>
-                <UserProgressTable
-                  headers={[
-                    <MdPersonPin size={25} />,
-                    "name",
-                    "date",
-                    "participation",
-                    "%",
-                  ]}
-                  usersData={userProgressTableData}
-                />
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </Page>
-    );
-  }
-}
+          <IconWidget
+            bgColor="white"
+            inverse={false}
+            icon={MdRateReview}
+            title="50+ commentaire"
+            subtitle="Sur Android"
+          />
+        </CardGroup> */}
+    </Page>
+  );
+};
 export default DashboardPage;
