@@ -1,0 +1,14 @@
+._dashboard {
+  padding: 2rem 0;
+
+  &-section {
+    margin-top: 4rem;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+  }
+}
