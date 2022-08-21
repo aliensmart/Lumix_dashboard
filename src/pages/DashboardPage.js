@@ -10,6 +10,7 @@ import { useRolesQUery } from "../hooks/useRolesData";
 import FinanceSection from "./dashboard/FinanceSection";
 import AdminData from "./dashboard/AdminData";
 import AdminsList from "./dashboard/AminsList";
+import { useAdminsQuery } from "../hooks/useAdminsQuery";
 
 // const today = new Date();
 // const lastWeek = new Date(
@@ -30,6 +31,9 @@ const DashboardPage = () => {
 
   const { data: roles } = useRolesQUery();
 
+  const { data: admins } = useAdminsQuery();
+  console.log(admins);
+
   const handleUpload = async (e) => {
     console.log(e);
     const file = e.target.files[0];
@@ -48,7 +52,7 @@ const DashboardPage = () => {
     <Page className="_dashboard">
       <AdminData roles={roles} data={data} handleUpload={handleUpload} />
       <FinanceSection />
-      <AdminsList />
+      <AdminsList admins={admins} />
     </Page>
   );
 };
