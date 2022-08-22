@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
-const LmInputLabelWrapp = styled.div`
+const LmSelectLabelWrapp = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: ${({ direction }) => direction ?? "column"};
   gap: 2px;
 `;
 
@@ -15,7 +15,7 @@ const LmLabelDesc = styled.p`
   font-weight: 400;
   opacity: 0.7;
 `;
-const LmInput = styled.input`
+const LmSelect = styled.select`
   display: block;
   box-sizing: border-box;
   width: 100%;
@@ -33,32 +33,36 @@ const LmInput = styled.input`
 `;
 const LmInputErr = styled.span``;
 
-function LmInputLabel({
+function LmSelectLabel({
   label,
   desc,
   errors,
   register,
   registerObj = {},
-  type = "text",
   labelName,
-  placeHolder,
-  isValid,
+  direction,
+  options = [],
 }) {
+  console.log(options);
   return (
-    <LmInputLabelWrapp>
+    <LmSelectLabelWrapp direction={direction}>
       <LmLabel>{label}</LmLabel>
       {desc && <LmLabelDesc>{desc}</LmLabelDesc>}
-      <LmInput
-        type={type}
-        placeholder={placeHolder}
+
+      <LmSelect
         {...register(labelName, { ...registerObj })}
         error={errors?.[labelName]}
-      />
-      {/* {errors?.[labelName]?.type === "required" && (
-        <LmInputErr>{label} is Required</LmInputErr>
-      )} */}
-    </LmInputLabelWrapp>
+      >
+        {options?.map((el) => {
+          return (
+            <option key={el?.value} value={el?.value}>
+              {el.label}
+            </option>
+          );
+        })}
+      </LmSelect>
+    </LmSelectLabelWrapp>
   );
 }
 
-export default LmInputLabel;
+export default LmSelectLabel;

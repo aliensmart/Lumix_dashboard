@@ -52,7 +52,7 @@ const DashboardPage = () => {
     <Page className="_dashboard">
       <AdminData roles={roles} data={data} handleUpload={handleUpload} />
       <FinanceSection />
-      <AdminsList admins={admins} />
+      <AdminsList admins={admins} roles={Object?.values(roles ?? {})} />
     </Page>
   );
 };

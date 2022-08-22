@@ -1,9 +1,18 @@
 import { Button } from "@mui/material";
 import MUIDataTable from "mui-datatables";
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { TABLE_TRANSLATE } from "../../utils/constants";
+import InviteDialog from "./InviteDialog";
 
-const AdminsList = ({ admins }) => {
+const AdminsList = ({ admins, roles }) => {
+  console.log(Object.values(roles));
+  const [open, setOpen] = useState(false);
+  const rolesList = useMemo(() => {
+    if (roles?.length <= 0) return;
+    return roles?.map((role) => {
+      return { value: role?.status, ref: role?.ref, label: role?.status };
+    });
+  }, [roles?.length]);
   const columns = [
     {
       name: "id",
@@ -107,11 +116,17 @@ const AdminsList = ({ admins }) => {
     //   ),
     ...TABLE_TRANSLATE,
   };
+  const onClose = () => {
+    setOpen(false);
+  };
   return (
     <div className="_dashboard--admins">
+      <InviteDialog open={open} onClose={onClose} roles={rolesList} />
       <div className="_dashboard-section">
         <h3>List des Administrateur</h3>
-        <Button variant="contained">Invitez un Administrateur</Button>
+        <Button variant="contained" onClick={() => setOpen(true)}>
+          Invitez un Administrateur
+        </Button>
       </div>
       <MUIDataTable columns={columns} data={admins} options={options} />
     </div>

@@ -20,7 +20,7 @@ export const useRolesQUery = (onSuccess, onError) => {
         if (doc.docs.length >= 1) {
           let data = {};
           doc?.docs?.forEach((dataDoc) => {
-            data[dataDoc?.id] = { ...dataDoc?.data() };
+            data[dataDoc?.id] = { ...dataDoc?.data(), ref: dataDoc?.ref };
           });
           return data;
         }
