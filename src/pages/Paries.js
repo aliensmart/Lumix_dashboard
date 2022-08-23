@@ -16,8 +16,7 @@ const Paries = () => {
   const columns = [
     "Parie Id",
     "Nom",
-    "Debut Jeux",
-    "fin du Jeux",
+    "Jours du Jeux",
     "Paris minimum",
     "status",
     "nombre de parieurs",
@@ -30,13 +29,18 @@ const Paries = () => {
   };
 
   return (
-    <Page title="Paries" breadcrumbs={[{ name: "Paries", active: true }]}>
+    <Page className={"_lmParies"}>
       <ParieModal open={open} setOpen={setOpen} title={"Ajoutez une parie"} />
-      <Stack className="_lm-paries" spacing={3}>
-        <Grid container justifyContent={"space-between"} alignItems={"center"}>
+      <Stack className="_lmParies-container" spacing={3}>
+        <Grid
+          container
+          justifyContent={"space-between"}
+          className="_lmParies-container__top"
+          alignItems={"center"}
+        >
           <Grid item>
             {" "}
-            <p>List des Paries</p>
+            <h3>List des Paries</h3>
           </Grid>
           <Grid item>
             {" "}

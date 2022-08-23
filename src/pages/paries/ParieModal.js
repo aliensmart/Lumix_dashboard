@@ -19,6 +19,7 @@ import LmInputLabel from "../../components/LmInputLabel";
 import { DateRange, DateRangePicker } from "react-date-range";
 import { addDocument, colRef, currentTime } from "../../services";
 import { getDocs, orderBy, query, where } from "firebase/firestore";
+import SingleDate from "./SingleDate";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -86,8 +87,7 @@ function ParieModal({ open, title, setOpen }) {
     setLoading(true);
     let random = Math.random().toString(36).substring(2, 15);
     const betData = {
-      betID: `parie_${random}`,
-      betName: data?.betName,
+      betName: data?.betName ?? `parie_${random}`,
       minBet: parseInt(data?.minBet),
       winnersNumber: parseInt(data?.winnersNumber),
       startsOn: state?.[0]?.startDate,
@@ -135,7 +135,7 @@ function ParieModal({ open, title, setOpen }) {
             justifyContent="space-between"
             alignItems={"stretch"}
           >
-            <Grid item lg={4} md={4} sm={12}>
+            <Grid item lg={6} md={6} sm={12}>
               <LmInputLabel
                 label={"Nom du Parie"}
                 desc={"Entrez le nom de votre parie"}
@@ -146,7 +146,7 @@ function ParieModal({ open, title, setOpen }) {
                 // registerObj={{ maxLength: 20, minLength: 3 }}
               />
             </Grid>
-            <Grid item lg={4} md={4} sm={12}>
+            <Grid item lg={6} md={6} sm={12}>
               <LmInputLabel
                 label={"Parie Minimum en francs Cfa"}
                 desc={"Entrez le montant minimum de ce parie"}
@@ -158,7 +158,7 @@ function ParieModal({ open, title, setOpen }) {
                 type="number"
               />
             </Grid>
-            <Grid item lg={4} md={4} sm={12}>
+            <Grid item lg={6} md={6} sm={12}>
               <LmInputLabel
                 label={"Nombre de Gagnant"}
                 desc={"Entrez le nombre de gagnant de votre parie"}
@@ -170,8 +170,12 @@ function ParieModal({ open, title, setOpen }) {
                 type="number"
               />
             </Grid>
+            <Grid item lg={6} md={6} sm={12}>
+              <SingleDate />
+            </Grid>
           </Grid>
-          <div>
+
+          {/* <div>
             <div>
               <p style={{ fontWeight: "600", margin: "0px" }}>
                 Debut et fin du jeux
@@ -191,6 +195,7 @@ function ParieModal({ open, title, setOpen }) {
               locale={locales["fr"]}
             />
           </div>
+          <div></div> */}
         </Stack>
       </DialogContent>
       <DialogActions>
