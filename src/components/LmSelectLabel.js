@@ -31,7 +31,6 @@ const LmSelect = styled.select`
   //   outline: 2px solid red;
   // }
 `;
-const LmInputErr = styled.span``;
 
 function LmSelectLabel({
   label,
@@ -43,7 +42,6 @@ function LmSelectLabel({
   direction,
   options = [],
 }) {
-  console.log(options);
   return (
     <LmSelectLabelWrapp direction={direction}>
       <LmLabel>{label}</LmLabel>

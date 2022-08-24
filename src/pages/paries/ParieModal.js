@@ -13,27 +13,24 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import * as locales from "react-date-range/dist/locale";
-import { addDays } from "date-fns";
 import LmInputLabel from "../../components/LmInputLabel";
-import { DateRange, DateRangePicker } from "react-date-range";
+import TextField from "@mui/material/TextField";
+import frLocale from "date-fns/locale/fr";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers";
 import { addDocument, colRef, currentTime } from "../../services";
-import { getDocs, orderBy, query, where } from "firebase/firestore";
-import SingleDate from "./SingleDate";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+const adapter = new AdapterDateFns();
 function ParieModal({ open, title, setOpen }) {
-  const [minDate, setMinDate] = useState(new Date());
-  const [state, setState] = useState([
-    {
-      startDate: new Date(),
-      endDate: addDays(new Date(), 7),
-      key: "selection",
-    },
-  ]);
+  const [value, setValue] = React.useState(adapter.date());
+
   const [loading, setLoading] = useState(false);
+  let random = Math.random().toString(36).substring(2, 15);
+  console.log(random);
   const {
     register,
     formState: { errors, touchedFields },
@@ -41,80 +38,47 @@ function ParieModal({ open, title, setOpen }) {
     handleSubmit,
   } = useForm({
     defaultValues: {
-      betName: "",
+      betName: `parie_${random}`,
       minBet: "500",
       winnersNumber: "20",
     },
   });
 
-  useEffect(() => {
-    const checkOverluping = async () => {
-      const ref2 = query(
-        colRef("bets"),
-        where("endsOn", ">=", new Date()),
-        orderBy("endsOn", "desc")
-      );
-
-      let docs2 = await getDocs(ref2);
-      console.log(docs2);
-      let dateRange = [];
-      if (docs2?.empty) {
-        dateRange.push({
-          startDate: new Date(),
-          endDate: addDays(new Date(), 7),
-          key: "selection",
-        });
-      } else {
-        let latestDoc = docs2?.docs[0]?.data();
-        console.log(latestDoc);
-
-        let startDate = addDays(latestDoc?.endsOn?.toDate(), 1);
-        setMinDate(startDate);
-        // dateRange = [
-        //   {
-        //     startDate: startDate,
-        //     endDate: addDays(startDate, 7),
-        //     key: "selection",
-        //   },
-        // ];
-      }
-      // setState(dateRange);
-      // return await getDocs(ref);
-    };
-    checkOverluping();
-  }, []);
   const onSubmit = async (data) => {
     setLoading(true);
-    let random = Math.random().toString(36).substring(2, 15);
+
+    const startOn = value.setHours(8, 30, 0);
+    const endOn = value.setHours(18, 30, 0);
     const betData = {
-      betName: data?.betName ?? `parie_${random}`,
+      betName: data?.betName,
       minBet: parseInt(data?.minBet),
       winnersNumber: parseInt(data?.winnersNumber),
-      startsOn: state?.[0]?.startDate,
-      endsOn: state?.[0]?.endDate,
+      startsOn: new Date(startOn),
+      endsOn: new Date(endOn),
       status: "SCHEDULED",
+      played: false,
       beters: 0,
       addedOn: currentTime(),
       totalBet: 0,
     };
 
     await addDocument("bets", betData);
-    setState([
-      {
-        startDate: new Date(),
-        endDate: addDays(new Date(), 7),
-        key: "selection",
-      },
-    ]);
     setOpen(false);
     setLoading(false);
+    random = Math.random().toString(36).substring(2, 15);
     reset({
-      betName: "",
+      betName: `parie_${random}`,
       minBet: "500",
       winnersNumber: "20",
     });
   };
   const handleClose = () => {
+    // random = Math.random().toString(36).substring(2, 15);
+    reset({
+      betName: `parie_${random}`,
+      minBet: "500",
+      winnersNumber: "20",
+    });
     setOpen(false);
   };
   return (
@@ -171,31 +135,37 @@ function ParieModal({ open, title, setOpen }) {
               />
             </Grid>
             <Grid item lg={6} md={6} sm={12}>
-              <SingleDate />
+              <h3 style={{ fontSize: "18px", fontWeight: 600, margin: 0 }}>
+                Choisir la date
+              </h3>
+              <p
+                style={{
+                  margin: 0,
+                  marginBottom: "15px",
+                  opacity: "0.8",
+                  fontSize: "14px",
+                }}
+              >
+                La date choisir sera toujour entre 8:30 et 18:30
+              </p>
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                adapterLocale={frLocale}
+              >
+                <DatePicker
+                  views={["day", "month", "year"]}
+                  label="Choisir le Jour de Votre Parie"
+                  value={value}
+                  onChange={(newValue) => {
+                    setValue(newValue);
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} helperText={null} />
+                  )}
+                />
+              </LocalizationProvider>
             </Grid>
           </Grid>
-
-          {/* <div>
-            <div>
-              <p style={{ fontWeight: "600", margin: "0px" }}>
-                Debut et fin du jeux
-              </p>
-              <span style={{ fontSize: "12px", opacity: "0.7" }}>
-                Entrez le debut et la fin de votre jeux
-              </span>
-            </div>
-            <DateRange
-              onChange={(item) => setState([item.selection])}
-              showSelectionPreview={true}
-              moveRangeOnFirstSelection={false}
-              months={2}
-              ranges={state}
-              direction="horizontal"
-              minDate={minDate}
-              locale={locales["fr"]}
-            />
-          </div>
-          <div></div> */}
         </Stack>
       </DialogContent>
       <DialogActions>
