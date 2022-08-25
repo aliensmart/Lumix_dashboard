@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Page from "../components/Page";
 import MUIDataTable from "mui-datatables";
 import { Button, Grid, Stack } from "@mui/material";
 import ParieModal from "./paries/ParieModal";
 import { useBetsQuery } from "../hooks/useBetsQuery";
 import { TABLE_TRANSLATE } from "../utils/constants";
+import CustomToolbar from "./paries/CustomToolbar";
 
 /**
  * This will be the file where Admins can create new challenges
@@ -12,8 +13,23 @@ import { TABLE_TRANSLATE } from "../utils/constants";
  */
 const Paries = () => {
   const [open, setOpen] = useState(false);
+  const [selectedParie, setSelectedParie] = useState({});
+  const [played, setPlayed] = useState(false);
+  const [parieId, setParieId] = useState("");
   const { data } = useBetsQuery();
-  console.log(data);
+
+  const notAllow = useMemo(() => {
+    if (!data?.length) return false;
+    return data.some((el) => !el.played || el.status !== "ENDED");
+  }, [data]);
+
+  const isPlaying = useMemo(() => {
+    if (!data?.length) return false;
+    return data.some((el) => el.status === "PLAYING");
+  }, [data]);
+
+  console.log(isPlaying);
+  console.log(notAllow);
 
   const columns = [
     {
@@ -47,12 +63,14 @@ const Paries = () => {
       options: {
         filter: true,
         sort: false,
-        setCellProps: () => ({
-          style: {
-            textAlign: "left",
-            whiteSpace: "nowrap",
-          },
-        }),
+        customBodyRender: (val) => {
+          let myStyle = {
+            margin: 0,
+            color: val ? "green" : "red",
+          };
+
+          return <p style={myStyle}>{val ? "OUI" : "NON"}</p>;
+        },
       },
     },
 
@@ -120,28 +138,23 @@ const Paries = () => {
         }),
       },
     },
-    // {
-    //   name: "addedOn",
-    //   label: "creer le",
-    //   options: {
-    //     filter: true,
-    //     sort: false,
-    //     setCellProps: () => ({
-    //       style: {
-    //         minWidth: "15rem",
-    //         padding: "16px 26px",
-    //         textAlign: "left",
-    //         whiteSpace: "nowrap",
-    //       },
-    //     }),
-    //   },
-    // },
   ];
 
   // const options = {
   //   filterType: "dropdown",
   //   responsive: "scroll",
   // };
+
+  const handleRowSelectionChange = (
+    currentRowsSelected,
+    allRowsSelected,
+    rowsSelected
+  ) => {
+    const parie = data[currentRowsSelected?.[0]?.dataIndex];
+    // setSelectedDevId(userId);
+    setPlayed(parie?.played);
+    setParieId(parie?.id);
+  };
 
   const options = {
     filterType: "dropdown",
@@ -151,10 +164,15 @@ const Paries = () => {
     // setCellProps: () => ({
     //   style: { minWidth: "15rem", padding: "16px 26px", textAlign: "left" },
     // }),
-    // onRowSelectionChange: handleRowSelectionChange,
-    // customToolbarSelect: ({ displayData }) => (
-    //   <CustomToolbarOption displayData={displayData} userId={selectedDevId} />
-    // ),
+    onRowSelectionChange: handleRowSelectionChange,
+    customToolbarSelect: ({ displayData }) => (
+      <CustomToolbar
+        displayData={displayData}
+        played={played}
+        setPlayed={setPlayed}
+        parieId={parieId}
+      />
+    ),
     ...TABLE_TRANSLATE,
   };
   return (
@@ -173,13 +191,24 @@ const Paries = () => {
           </Grid>
           <Grid item>
             {" "}
-            <Button
-              variant="contained"
-              size="medium"
-              onClick={() => setOpen(true)}
-            >
-              Creez un Parie
-            </Button>
+            {!notAllow && !isPlaying ? (
+              <Button
+                variant="contained"
+                size="medium"
+                onClick={() => setOpen(true)}
+              >
+                Creez un Parie
+              </Button>
+            ) : notAllow && isPlaying ? (
+              <p>Jeux en Cours</p>
+            ) : (
+              notAllow &&
+              !isPlaying && (
+                <p style={{ color: "red" }}>
+                  Lancer le Jeux en clickant sur le parie non jouer
+                </p>
+              )
+            )}
           </Grid>
         </Grid>
 
