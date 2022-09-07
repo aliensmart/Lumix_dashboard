@@ -28,9 +28,6 @@ const Paries = () => {
     return data.some((el) => el.status === "PLAYING");
   }, [data]);
 
-  console.log(isPlaying);
-  console.log(notAllow);
-
   const columns = [
     {
       name: "id",

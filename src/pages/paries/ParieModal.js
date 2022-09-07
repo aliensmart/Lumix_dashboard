@@ -18,8 +18,9 @@ import TextField from "@mui/material/TextField";
 import frLocale from "date-fns/locale/fr";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers";
+import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
 import { addDocument, colRef, currentTime } from "../../services";
+import { Timestamp } from "firebase/firestore";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -44,18 +45,21 @@ function ParieModal({ open, title, setOpen }) {
     },
   });
 
+  // console.log(value.toUTCString());
+
   const onSubmit = async (data) => {
     setLoading(true);
 
-    const startOn = value.setHours(8, 30, 0);
-    const endOn = value.setHours(18, 30, 0);
+    const startOn = value.setUTCHours(8, 30, 0);
+    const endOn = value.setUTCHours(18, 30, 0);
+    // Timestamp.
     const betData = {
       betName: data?.betName,
       minBet: parseInt(data?.minBet),
       winnersNumber: parseInt(data?.winnersNumber),
       startsOn: new Date(startOn),
       endsOn: new Date(endOn),
-      status: "SCHEDULED",
+      status: "ONGOING",
       played: false,
       beters: 0,
       addedOn: currentTime(),
@@ -163,6 +167,14 @@ function ParieModal({ open, title, setOpen }) {
                     <TextField {...params} helperText={null} />
                   )}
                 />
+                {/* <DateTimePicker
+                  renderInput={(props) => <TextField {...props} />}
+                  label="DateTimePicker"
+                  value={value}
+                  onChange={(newValue) => {
+                    setValue(newValue);
+                  }}
+                /> */}
               </LocalizationProvider>
             </Grid>
           </Grid>
