@@ -106,11 +106,7 @@ const UsersPage = () => {
     console.log(rowData);
     console.log(rowMeta);
   };
-  const handleRowSelectionChange = (
-    currentRowsSelected,
-    allRowsSelected,
-    rowsSelected
-  ) => {
+  const handleRowSelectionChange = (currentRowsSelected) => {
     const userId = data[currentRowsSelected?.[0]?.dataIndex]?.id;
     setSelectedDevId(userId);
   };

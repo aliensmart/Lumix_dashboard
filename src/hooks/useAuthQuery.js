@@ -13,7 +13,7 @@ export const useAuthQuery = () => {
       console.error("Failed to subscribe to users authentication state!");
     },
     select: (user) => {
-      console.log(user);
+      // console.log(user);
       if (user?.uid) {
         return {
           uid: user?.uid,

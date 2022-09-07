@@ -1,10 +1,5 @@
-import { colRef, docRef } from "../services";
-import { orderBy, query, where } from "firebase/firestore";
-import {
-  useFirestoreDocument,
-  useFirestoreDocumentData,
-  useFirestoreQuery,
-} from "@react-query-firebase/firestore";
+import { docRef } from "../services";
+import { useFirestoreDocumentData } from "@react-query-firebase/firestore";
 
 export const useSingleUserQuery = (userId, onSuccess, onError) => {
   const ref = docRef(`users/${userId}`);
