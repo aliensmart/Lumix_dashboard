@@ -7,10 +7,20 @@ import {
   Slide,
   Stack,
 } from "@mui/material";
+import { fetchSignInMethodsForEmail } from "firebase/auth";
 import React, { useState } from "react";
+import { useId } from "react";
 import { useForm } from "react-hook-form";
 import LmInputLabel from "../../components/LmInputLabel";
 import LmSelectLabel from "../../components/LmSelectLabel";
+import { generateRandom } from "../../helpers";
+import {
+  addDocument,
+  backendRegist,
+  checkExistingEmail,
+  createDocFromId,
+  currentTime,
+} from "../../services";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -18,7 +28,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const InviteDialog = ({ open, onClose, roles }) => {
   const [isLoading, setIsLoading] = useState(false);
-  console.log(roles);
+
   const {
     register,
     formState: { errors, touchedFields },
@@ -34,8 +44,39 @@ const InviteDialog = ({ open, onClose, roles }) => {
     },
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (formData) => {
+    const ExistingEmail = await checkExistingEmail(formData?.email);
+
+    if (ExistingEmail.includes("password")) {
+      return;
+    }
+    const password = generateRandom();
+
+    const roleRef = roles.filter((el) => el.value === formData.role);
+
+    const adminData = {
+      ...formData,
+      role: roleRef?.[0].ref,
+      createdOn: currentTime(),
+      profile: "",
+    };
+
+    const { data: userId } = await backendRegist(formData?.email, password);
+
+    //create user
+    await createDocFromId("admins", userId, adminData);
+
+    //send email
+    const emailData = {
+      to: [formData?.email],
+      message: {
+        html: `<div>Vous etes inviter a etre un ${roleRef?.[0].value} dans le platform de <a href="https://lumix-91314.web.app/" target="_blank">lumix</a> votre email est ${formData?.emai} et votre mot de pass est ${password}</div>`,
+        subject: "Invitation a joindre lumix administration",
+        text: "",
+      },
+    };
+
+    addDocument("mail", emailData);
     onClose();
     reset({
       fullName: "",
@@ -111,6 +152,7 @@ const InviteDialog = ({ open, onClose, roles }) => {
             errors={errors}
             register={register}
             options={roles}
+            registerObj={{ required: true }}
           />
         </Stack>
       </DialogContent>

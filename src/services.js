@@ -10,6 +10,7 @@ import {
   getDoc,
   serverTimestamp,
 } from "firebase/firestore";
+import { getFunctions, httpsCallable } from "firebase/functions";
 import {
   getDownloadURL,
   getStorage,
@@ -19,6 +20,7 @@ import {
 } from "firebase/storage";
 import {
   createUserWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
   getAuth,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
@@ -46,9 +48,19 @@ export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
+export const functions = getFunctions(app);
 
 export const colRef = (_colPath) => {
   return collection(db, _colPath);
+};
+
+export const checkExistingEmail = async (email) => {
+  return await fetchSignInMethodsForEmail(auth, email);
+};
+
+export const backendRegist = async (email, pass) => {
+  const userCreation = httpsCallable(functions, "onUserCreate");
+  return await userCreation({ email: email, password: pass });
 };
 
 export const docReference = (_docPath) => {
