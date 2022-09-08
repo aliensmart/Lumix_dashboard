@@ -1,0 +1,16 @@
+._lmParies {
+  padding: 2rem 0;
+
+  .css-d59b2q-MuiGrid-root-MuiPickersToolbar-content {
+    display: flex;
+    flex-direction: column !important;
+  }
+  .MuiPickerStaticWrapper-content.css-xelq0e-MuiPickerStaticWrapper-content {
+    & > div {
+      flex-direction: column !important;
+    }
+  }
+  .css-u0soqy-MuiPickerStaticWrapper-root {
+    max-width: 500px;
+  }
+}

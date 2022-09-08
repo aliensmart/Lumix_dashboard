@@ -9,27 +9,29 @@ import {
   Slide,
   Stack,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import * as locales from "react-date-range/dist/locale";
-import { addDays } from "date-fns";
 import LmInputLabel from "../../components/LmInputLabel";
-import { DateRange, DateRangePicker } from "react-date-range";
+import TextField from "@mui/material/TextField";
+import frLocale from "date-fns/locale/fr";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
+import { addDocument, colRef, currentTime } from "../../services";
+import { Timestamp } from "firebase/firestore";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+const adapter = new AdapterDateFns();
 function ParieModal({ open, title, setOpen }) {
-  const minDate = new Date();
-  const [state, setState] = useState([
-    {
-      startDate: new Date(),
-      endDate: addDays(new Date(), 7),
-      key: "selection",
-    },
-  ]);
+  const [value, setValue] = React.useState(adapter.date());
+
+  const [loading, setLoading] = useState(false);
+  let random = Math.random().toString(36).substring(2, 15);
+  console.log(random);
   const {
     register,
     formState: { errors, touchedFields },
@@ -37,32 +39,50 @@ function ParieModal({ open, title, setOpen }) {
     handleSubmit,
   } = useForm({
     defaultValues: {
-      betName: "",
+      betName: `parie_${random}`,
       minBet: "500",
       winnersNumber: "20",
     },
   });
-  const onSubmit = (data) => {
-    console.log(data);
-    console.log(state);
-    let random = Math.random().toString(36).substring(2, 15);
+
+  // console.log(value.toUTCString());
+
+  const onSubmit = async (data) => {
+    setLoading(true);
+
+    const startOn = value.setUTCHours(8, 30, 0);
+    const endOn = value.setUTCHours(18, 30, 0);
+    // Timestamp.
     const betData = {
-      betID: `parie_${random}`,
       betName: data?.betName,
       minBet: parseInt(data?.minBet),
       winnersNumber: parseInt(data?.winnersNumber),
-      startsOn: state?.[0]?.startDate,
-      EndsOn: state?.[0]?.endDate,
+      startsOn: new Date(startOn),
+      endsOn: new Date(endOn),
+      status: "ONGOING",
+      played: false,
+      beters: 0,
+      addedOn: currentTime(),
+      totalBet: 0,
     };
 
+    await addDocument("bets", betData);
+    setOpen(false);
+    setLoading(false);
+    random = Math.random().toString(36).substring(2, 15);
     reset({
-      betName: "",
+      betName: `parie_${random}`,
       minBet: "500",
       winnersNumber: "20",
     });
-    setOpen(false);
   };
   const handleClose = () => {
+    // random = Math.random().toString(36).substring(2, 15);
+    reset({
+      betName: `parie_${random}`,
+      minBet: "500",
+      winnersNumber: "20",
+    });
     setOpen(false);
   };
   return (
@@ -83,7 +103,7 @@ function ParieModal({ open, title, setOpen }) {
             justifyContent="space-between"
             alignItems={"stretch"}
           >
-            <Grid item lg={4} md={4} sm={12}>
+            <Grid item lg={6} md={6} sm={12}>
               <LmInputLabel
                 label={"Nom du Parie"}
                 desc={"Entrez le nom de votre parie"}
@@ -94,7 +114,7 @@ function ParieModal({ open, title, setOpen }) {
                 // registerObj={{ maxLength: 20, minLength: 3 }}
               />
             </Grid>
-            <Grid item lg={4} md={4} sm={12}>
+            <Grid item lg={6} md={6} sm={12}>
               <LmInputLabel
                 label={"Parie Minimum en francs Cfa"}
                 desc={"Entrez le montant minimum de ce parie"}
@@ -106,7 +126,7 @@ function ParieModal({ open, title, setOpen }) {
                 type="number"
               />
             </Grid>
-            <Grid item lg={4} md={4} sm={12}>
+            <Grid item lg={6} md={6} sm={12}>
               <LmInputLabel
                 label={"Nombre de Gagnant"}
                 desc={"Entrez le nombre de gagnant de votre parie"}
@@ -118,31 +138,52 @@ function ParieModal({ open, title, setOpen }) {
                 type="number"
               />
             </Grid>
-          </Grid>
-          <div>
-            <div>
-              <p style={{ fontWeight: "600", margin: "0px" }}>
-                Debut et fin du jeux
+            <Grid item lg={6} md={6} sm={12}>
+              <h3 style={{ fontSize: "18px", fontWeight: 600, margin: 0 }}>
+                Choisir la date
+              </h3>
+              <p
+                style={{
+                  margin: 0,
+                  marginBottom: "15px",
+                  opacity: "0.8",
+                  fontSize: "14px",
+                }}
+              >
+                La date choisir sera toujour entre 8:30 et 18:30
               </p>
-              <span style={{ fontSize: "12px", opacity: "0.7" }}>
-                Entrez le debut et la fin de votre jeux
-              </span>
-            </div>
-            <DateRange
-              onChange={(item) => setState([item.selection])}
-              showSelectionPreview={true}
-              moveRangeOnFirstSelection={false}
-              months={2}
-              ranges={state}
-              direction="horizontal"
-              minDate={minDate}
-              locale={locales["fr"]}
-            />
-          </div>
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                adapterLocale={frLocale}
+              >
+                <DatePicker
+                  views={["day", "month", "year"]}
+                  label="Choisir le Jour de Votre Parie"
+                  value={value}
+                  onChange={(newValue) => {
+                    setValue(newValue);
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} helperText={null} />
+                  )}
+                />
+                {/* <DateTimePicker
+                  renderInput={(props) => <TextField {...props} />}
+                  label="DateTimePicker"
+                  value={value}
+                  onChange={(newValue) => {
+                    setValue(newValue);
+                  }}
+                /> */}
+              </LocalizationProvider>
+            </Grid>
+          </Grid>
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleSubmit(onSubmit)}>Creez</Button>
+        <Button onClick={handleSubmit(onSubmit)} disabled={loading}>
+          Creez
+        </Button>
         <Button onClick={handleClose}>Fermez</Button>
       </DialogActions>
     </Dialog>

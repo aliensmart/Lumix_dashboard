@@ -76,7 +76,7 @@ class Header extends React.Component {
   };
 
   render() {
-    const { isNotificationConfirmed } = this.state;
+    // const { isNotificationConfirmed } = this.state;
 
     return (
       <Navbar light expand className={bem.b("bg-white")}>
@@ -86,7 +86,7 @@ class Header extends React.Component {
           </Button>
         </Nav>
 
-        <Nav navbar className={bem.e("nav-right")}>
+        {/* <Nav navbar className={bem.e("nav-right")}>
           <NavItem className="d-inline-flex">
             <NavLink id="Popover1" className="position-relative">
               {isNotificationConfirmed ? (
@@ -155,7 +155,7 @@ class Header extends React.Component {
               </PopoverBody>
             </Popover>
           </NavItem>
-        </Nav>
+        </Nav> */}
       </Navbar>
     );
   }

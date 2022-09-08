@@ -1,153 +1,55 @@
 import Page from "../components/Page";
-import ProductMedia from "../components/ProductMedia";
-import UserProgressTable from "../components/UserProgressTable";
-import { IconWidget, NumberWidget } from "../components/Widget";
-import { productsData, userProgressTableData } from "../demos/dashboardPage";
 import React from "react";
-import { MdPersonPin, MdRateReview, MdShare, MdThumbUp } from "react-icons/md";
-import {
-  Badge,
-  Button,
-  Card,
-  CardBody,
-  CardDeck,
-  CardGroup,
-  CardHeader,
-  CardTitle,
-  Col,
-  ListGroup,
-  ListGroupItem,
-  Row,
-} from "reactstrap";
-import { getColor } from "../utils/colors";
+// import { Avatar, Grid, Button, Stack } from "@mui/material";
+import { useCurrentAdmin } from "../hooks/useCurrentAdmin";
 
-const today = new Date();
-const lastWeek = new Date(
-  today.getFullYear(),
-  today.getMonth(),
-  today.getDate() - 7
-);
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { addOrUpdate, storage } from "../services";
+// import FinacialCard from "./dashboard/FinacialCard";
+import { useRolesQUery } from "../hooks/useRolesData";
+import FinanceSection from "./dashboard/FinanceSection";
+import AdminData from "./dashboard/AdminData";
+import AdminsList from "./dashboard/AminsList";
+import { useAdminsQuery } from "../hooks/useAdminsQuery";
 
-class DashboardPage extends React.Component {
-  componentDidMount() {
-    // this is needed, because InfiniteCalendar forces window scroll
-    window.scrollTo(0, 0);
-  }
+// const today = new Date();
+// const lastWeek = new Date(
+//   today.getFullYear(),
+//   today.getMonth(),
+//   today.getDate() - 7
+// );
 
-  render() {
-    const primaryColor = getColor("primary");
+const DashboardPage = () => {
+  // componentDidMount() {
+  //   // this is needed, because InfiniteCalendar forces window scroll
+  //   window.scrollTo(0, 0);
+  // }
 
-    return (
-      <Page
-        className="DashboardPage"
-        title="Dashboard"
-        breadcrumbs={[{ name: "Dashboard", active: true }]}
-      >
-        <Row>
-          <Col lg={4} md={6} sm={6} xs={12}>
-            <NumberWidget
-              title="Monthly Visitors"
-              subtitle="This month"
-              number="5,400"
-              color="secondary"
-              progress={{
-                value: 45,
-                label: "Last month",
-              }}
-            />
-          </Col>
+  const adminId = "ETAIhJjsyEhIrRXOJ9Or3g0NJ7E3";
 
-          <Col lg={4} md={6} sm={6} xs={12}>
-            <NumberWidget
-              title="New Users"
-              subtitle="This month"
-              number="3,400"
-              color="secondary"
-              progress={{
-                value: 90,
-                label: "Last month",
-              }}
-            />
-          </Col>
+  const { data } = useCurrentAdmin("ETAIhJjsyEhIrRXOJ9Or3g0NJ7E3");
 
-          <Col lg={4} md={6} sm={6} xs={12}>
-            <NumberWidget
-              title="Bounce Rate"
-              subtitle="This month"
-              number="38%"
-              color="secondary"
-              progress={{
-                value: 60,
-                label: "Last month",
-              }}
-            />
-          </Col>
-        </Row>
+  const { data: roles } = useRolesQUery();
 
-        <CardGroup style={{ marginBottom: "1rem" }}>
-          <IconWidget
-            bgColor="white"
-            inverse={false}
-            icon={MdThumbUp}
-            title="50+ Likes"
-            subtitle="People you like"
-          />
-          <IconWidget
-            bgColor="white"
-            inverse={false}
-            icon={MdRateReview}
-            title="10+ Reviews"
-            subtitle="New Reviews"
-          />
-          <IconWidget
-            bgColor="white"
-            inverse={false}
-            icon={MdShare}
-            title="30+ Shares"
-            subtitle="New Shares"
-          />
-        </CardGroup>
+  const { data: admins } = useAdminsQuery();
 
-        <Row>
-          <Col md="6" sm="12" xs="12">
-            <Card>
-              <CardHeader>New Challenges</CardHeader>
-              <CardBody>
-                {productsData.map(
-                  ({ id, image, title, description, right }) => (
-                    <ProductMedia
-                      key={id}
-                      image={image}
-                      title={title}
-                      description={description}
-                      right={right}
-                    />
-                  )
-                )}
-              </CardBody>
-            </Card>
-          </Col>
+  const handleUpload = async (e) => {
+    const file = e.target.files[0];
+    const storageRef = ref(storage, `admins/${adminId}/profile/${file.name}`);
+    const uploadTask = await uploadBytes(storageRef, file);
+    const downloaUrl = await getDownloadURL(uploadTask.ref);
 
-          <Col md="6" sm="12" xs="12">
-            <Card>
-              <CardHeader>New Users</CardHeader>
-              <CardBody>
-                <UserProgressTable
-                  headers={[
-                    <MdPersonPin size={25} />,
-                    "name",
-                    "date",
-                    "participation",
-                    "%",
-                  ]}
-                  usersData={userProgressTableData}
-                />
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </Page>
-    );
-  }
-}
+    addOrUpdate(`admins/${adminId}`, { profile: downloaUrl });
+
+    e.persist();
+  };
+
+  return (
+    <Page className="_dashboard">
+      <AdminData roles={roles} data={data} handleUpload={handleUpload} />
+      <FinanceSection />
+      <AdminsList admins={admins} roles={Object?.values(roles ?? {})} />
+    </Page>
+  );
+};
 export default DashboardPage;
