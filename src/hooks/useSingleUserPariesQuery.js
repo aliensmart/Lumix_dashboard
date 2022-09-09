@@ -4,7 +4,7 @@ import { useFirestoreQuery } from "@react-query-firebase/firestore";
 
 export const useSingleUserPariesQuery = (userId, onSuccess, onError) => {
   const ref = query(
-    colRef(`users/${userId}/paries`),
+    colRef(`users/${userId}/userBets`),
     orderBy("createdOn", "desc")
   );
 

@@ -7,6 +7,7 @@ import { Nav, Navbar, NavItem, NavLink as BSNavLink } from "reactstrap";
 import bn from "../../utils/bemnames";
 import styled from "styled-components";
 import { onLogOut } from "../../services";
+import { useAdminCheckerQuery } from "../../hooks/useAminCheckerQuery";
 
 const sidebarBackground = {
   backgroundImage: `url("${sidebarBgImage}")`,
@@ -29,44 +30,29 @@ const LogOut = styled.div`
   }
 `;
 
-class Sidebar extends React.Component {
-  state = {
-    isOpenComponents: true,
-    isOpenContents: true,
-    isOpenPages: true,
-  };
-
-  handleClick = (name) => () => {
-    this.setState((prevState) => {
-      const isOpen = prevState[`isOpen${name}`];
-
-      return {
-        [`isOpen${name}`]: !isOpen,
-      };
-    });
-  };
-
-  LogOut = () => {
+const Sidebar = () => {
+  const { data: adminData } = useAdminCheckerQuery();
+  const onLogOut = () => {
     onLogOut();
   };
 
-  render() {
-    return (
-      <aside className={bem.b()} data-image={sidebarBgImage}>
-        <div className={bem.e("background")} style={sidebarBackground} />
-        <div className={bem.e("content")}>
-          <Navbar>
-            <img
-              src={logo200Image}
-              width="40"
-              height="30"
-              className="pr-2"
-              alt=""
-            />
-            <span className="text-white">LUMIX</span>
-          </Navbar>
-          <Nav vertical>
-            {navItems.map(({ to, name, exact, Icon }, index) => (
+  return (
+    <aside className={bem.b()} data-image={sidebarBgImage}>
+      <div className={bem.e("background")} style={sidebarBackground} />
+      <div className={bem.e("content")}>
+        <Navbar>
+          <img
+            src={logo200Image}
+            width="40"
+            height="30"
+            className="pr-2"
+            alt=""
+          />
+          <span className="text-white">LUMIX</span>
+        </Navbar>
+        <Nav vertical>
+          {adminData?.ref?.id &&
+            navItems.map(({ to, name, exact, Icon }, index) => (
               <NavItem key={index} className={bem.e("nav-item")}>
                 <BSNavLink
                   id={`navItem-${name}-${index}`}
@@ -79,20 +65,19 @@ class Sidebar extends React.Component {
                 </BSNavLink>
               </NavItem>
             ))}
-            <NavItem
-              className={bem.e("nav-item")}
-              style={{ marginTop: "1rem" }}
-              onClick={this.LogOut}
-            >
-              <LogOut>
-                <p>Se deconnecter</p>
-              </LogOut>
-            </NavItem>
-          </Nav>
-        </div>
-      </aside>
-    );
-  }
-}
+          <NavItem
+            className={bem.e("nav-item")}
+            style={{ marginTop: "1rem" }}
+            onClick={onLogOut}
+          >
+            <LogOut>
+              <p>Se deconnecter</p>
+            </LogOut>
+          </NavItem>
+        </Nav>
+      </div>
+    </aside>
+  );
+};
 
 export default Sidebar;

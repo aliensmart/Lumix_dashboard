@@ -70,7 +70,7 @@ const InviteDialog = ({ open, onClose, roles }) => {
     const emailData = {
       to: [formData?.email],
       message: {
-        html: `<div>Vous etes inviter a etre un ${roleRef?.[0].value} dans le platform de <a href="https://lumix-91314.web.app/" target="_blank">lumix</a> votre email est ${formData?.emai} et votre mot de pass est ${password}</div>`,
+        html: `<div>Vous etes inviter a etre un ${roleRef?.[0].value} dans le platform de <a href="https://lumix-91314.web.app/" target="_blank">lumix</a> votre email est ${formData?.email} et votre mot de pass est ${password}</div>`,
         subject: "Invitation a joindre lumix administration",
         text: "",
       },

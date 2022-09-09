@@ -31,7 +31,7 @@ function ParieModal({ open, title, setOpen }) {
 
   const [loading, setLoading] = useState(false);
   let random = Math.random().toString(36).substring(2, 15);
-  console.log(random);
+
   const {
     register,
     formState: { errors, touchedFields },

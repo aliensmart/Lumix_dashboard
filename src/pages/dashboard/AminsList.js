@@ -5,7 +5,6 @@ import { TABLE_TRANSLATE } from "../../utils/constants";
 import InviteDialog from "./InviteDialog";
 
 const AdminsList = ({ admins, roles }) => {
-  console.log(Object.values(roles));
   const [open, setOpen] = useState(false);
   const rolesList = useMemo(() => {
     if (roles?.length <= 0) return;

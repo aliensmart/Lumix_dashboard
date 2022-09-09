@@ -11,6 +11,7 @@ import FinanceSection from "./dashboard/FinanceSection";
 import AdminData from "./dashboard/AdminData";
 import AdminsList from "./dashboard/AminsList";
 import { useAdminsQuery } from "../hooks/useAdminsQuery";
+import { useAdminCheckerQuery } from "../hooks/useAminCheckerQuery";
 
 // const today = new Date();
 // const lastWeek = new Date(
@@ -25,9 +26,9 @@ const DashboardPage = () => {
   //   window.scrollTo(0, 0);
   // }
 
-  const adminId = "ETAIhJjsyEhIrRXOJ9Or3g0NJ7E3";
+  const { data: adminData } = useAdminCheckerQuery();
 
-  const { data } = useCurrentAdmin("ETAIhJjsyEhIrRXOJ9Or3g0NJ7E3");
+  const { data } = useCurrentAdmin(adminData?.ref.id);
 
   const { data: roles } = useRolesQUery();
 
@@ -35,11 +36,14 @@ const DashboardPage = () => {
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
-    const storageRef = ref(storage, `admins/${adminId}/profile/${file.name}`);
+    const storageRef = ref(
+      storage,
+      `admins/${adminData?.ref.id}/profile/${file.name}`
+    );
     const uploadTask = await uploadBytes(storageRef, file);
     const downloaUrl = await getDownloadURL(uploadTask.ref);
 
-    addOrUpdate(`admins/${adminId}`, { profile: downloaUrl });
+    addOrUpdate(`admins/${adminData?.ref.id}`, { profile: downloaUrl });
 
     e.persist();
   };

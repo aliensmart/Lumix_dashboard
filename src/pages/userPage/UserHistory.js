@@ -13,7 +13,7 @@ const UserHistory = ({ bets }) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => setValue(newValue);
-  console.log("history");
+
   return (
     <div className={"_alm-userPage-histories__wrapper"}>
       <Tabs

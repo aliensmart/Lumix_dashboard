@@ -15,8 +15,8 @@ export const useCurrentAdmin = (userId, onSuccess, onError) => {
     {
       onSuccess,
       onError,
-      select: (data) => {
-        return data;
+      select: (doc) => {
+        return { ...doc?.data() };
       },
       enabled: !!userId,
     }

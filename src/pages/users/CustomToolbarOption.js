@@ -17,7 +17,7 @@ import { docRef } from "../../services";
 const CustomToolbarOption = ({ userId }) => {
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
-  console.log(userId);
+
   const onViewUser = () => {
     navigate(`/users/${userId}`);
   };

@@ -11,9 +11,7 @@ const UserPage = () => {
   const { userId } = useParams();
   const { data: userDetails } = useSingleUserQuery(userId);
   const betData = useSingleUserPariesQuery(userId);
-  console.log(userId);
-  console.log(userDetails);
-  console.log(betData);
+
   return (
     <Page className={"_alm-userPage"}>
       <Grid container spacing={3}>

@@ -19,7 +19,6 @@ export const useAdminsQuery = (onSuccess, onError) => {
       onError,
       select: (doc) => {
         if (doc.docs.length >= 1) {
-          console.log();
           let data = doc?.docs?.map((dataDoc) => {
             const adminData = { ...dataDoc?.data() };
             return {
