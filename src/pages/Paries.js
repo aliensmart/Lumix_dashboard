@@ -7,6 +7,7 @@ import { useBetsQuery } from "../hooks/useBetsQuery";
 import { TABLE_TRANSLATE } from "../utils/constants";
 import CustomToolbar from "./paries/CustomToolbar";
 import PlayModal from "./paries/PlayModal";
+import { renderDate } from "../utils/helpers";
 
 /**
  * This will be the file where Admins can create new challenges
@@ -61,7 +62,7 @@ const Paries = () => {
       label: "Jouer",
       options: {
         filter: true,
-        sort: false,
+        sort: true,
         customBodyRender: (val) => {
           let myStyle = {
             margin: 0,
@@ -74,11 +75,11 @@ const Paries = () => {
     },
 
     {
-      name: "minBet",
-      label: "Prix Minimum de Parie",
+      name: "totalBet",
+      label: "Montant total Jouer(Francs CFA)",
       options: {
         filter: true,
-        sort: false,
+        sort: true,
         setCellProps: () => ({
           style: {
             minWidth: "15rem",
@@ -94,7 +95,7 @@ const Paries = () => {
       label: "Nombre de Personne a Gagne",
       options: {
         filter: true,
-        sort: false,
+        sort: true,
         setCellProps: () => ({
           style: {
             minWidth: "15rem",
@@ -122,7 +123,7 @@ const Paries = () => {
       },
     },
     {
-      name: "betDay",
+      name: "endsOn",
       label: "Jour de Jeux",
       options: {
         filter: true,
@@ -135,6 +136,9 @@ const Paries = () => {
             whiteSpace: "nowrap",
           },
         }),
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return renderDate(value.toDate());
+        },
       },
     },
   ];

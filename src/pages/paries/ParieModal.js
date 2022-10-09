@@ -40,8 +40,8 @@ function ParieModal({ open, title, setOpen }) {
   } = useForm({
     defaultValues: {
       betName: `parie_${random}`,
-      minBet: "500",
-      winnersNumber: "20",
+      // minBet: "500",
+      // winnersNumber: "20",
     },
   });
 
@@ -55,8 +55,8 @@ function ParieModal({ open, title, setOpen }) {
     // Timestamp.
     const betData = {
       betName: data?.betName,
-      minBet: parseInt(data?.minBet),
-      winnersNumber: parseInt(data?.winnersNumber),
+      // minBet: parseInt(data?.minBet),
+      // winnersNumber: parseInt(data?.winnersNumber),
       startsOn: new Date(startOn),
       endsOn: new Date(endOn),
       status: "ONGOING",
@@ -72,16 +72,16 @@ function ParieModal({ open, title, setOpen }) {
     random = Math.random().toString(36).substring(2, 15);
     reset({
       betName: `parie_${random}`,
-      minBet: "500",
-      winnersNumber: "20",
+      // minBet: "500",
+      // winnersNumber: "20",
     });
   };
   const handleClose = () => {
     // random = Math.random().toString(36).substring(2, 15);
     reset({
       betName: `parie_${random}`,
-      minBet: "500",
-      winnersNumber: "20",
+      // minBet: "500",
+      // winnersNumber: "20",
     });
     setOpen(false);
   };
@@ -114,7 +114,7 @@ function ParieModal({ open, title, setOpen }) {
                 // registerObj={{ maxLength: 20, minLength: 3 }}
               />
             </Grid>
-            <Grid item lg={6} md={6} sm={12}>
+            {/* <Grid item lg={6} md={6} sm={12}>
               <LmInputLabel
                 label={"Parie Minimum en francs Cfa"}
                 desc={"Entrez le montant minimum de ce parie"}
@@ -125,8 +125,8 @@ function ParieModal({ open, title, setOpen }) {
                 registerObj={{ required: true, min: 100 }}
                 type="number"
               />
-            </Grid>
-            <Grid item lg={6} md={6} sm={12}>
+            </Grid> */}
+            {/* <Grid item lg={6} md={6} sm={12}>
               <LmInputLabel
                 label={"Nombre de Gagnant"}
                 desc={"Entrez le nombre de gagnant de votre parie"}
@@ -137,7 +137,7 @@ function ParieModal({ open, title, setOpen }) {
                 registerObj={{ required: true, min: 1 }}
                 type="number"
               />
-            </Grid>
+            </Grid> */}
             <Grid item lg={6} md={6} sm={12}>
               <h3 style={{ fontSize: "18px", fontWeight: 600, margin: 0 }}>
                 Choisir la date
