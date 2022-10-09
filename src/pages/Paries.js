@@ -6,6 +6,7 @@ import ParieModal from "./paries/ParieModal";
 import { useBetsQuery } from "../hooks/useBetsQuery";
 import { TABLE_TRANSLATE } from "../utils/constants";
 import CustomToolbar from "./paries/CustomToolbar";
+import PlayModal from "./paries/PlayModal";
 
 /**
  * This will be the file where Admins can create new challenges
@@ -16,6 +17,7 @@ const Paries = () => {
   const [selectedParie, setSelectedParie] = useState({});
   const [played, setPlayed] = useState(false);
   const [parieId, setParieId] = useState("");
+  const [isPlay, setIsPlay] = useState(false);
   const { data } = useBetsQuery();
 
   const notAllow = useMemo(() => {
@@ -168,6 +170,7 @@ const Paries = () => {
         played={played}
         setPlayed={setPlayed}
         parieId={parieId}
+        setIsPlay={setIsPlay}
       />
     ),
     ...TABLE_TRANSLATE,
@@ -175,6 +178,7 @@ const Paries = () => {
   return (
     <Page className={"_lmParies"}>
       <ParieModal open={open} setOpen={setOpen} title={"Ajoutez une parie"} />
+      <PlayModal open={isPlay} setOpen={setIsPlay} parieId={parieId} />
       <Stack className="_lmParies-container" spacing={3}>
         <Grid
           container
