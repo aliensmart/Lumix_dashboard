@@ -16,7 +16,7 @@ export const useSingleUserQuery = (userId, onSuccess, onError) => {
       onSuccess,
       onError,
       select: (data) => {
-        return data;
+        return { ...data, ref: ref };
       },
       enabled: !!userId,
     }

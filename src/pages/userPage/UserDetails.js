@@ -28,7 +28,9 @@ const UserDetails = ({ userData }) => {
       <div className="_alm-userPage-details__wrapper-more">
         <div className="userDetail-el">
           <p className="userDetail-el-title">Creer le </p>
-          <p className="userDetail-el-par">{renderDate(userData?.createdOn)}</p>
+          <p className="userDetail-el-par">
+            {renderDate(userData?.addedOn?.toDate())}
+          </p>
         </div>
         <div className="userDetail-el">
           <p className="userDetail-el-title">Ville </p>

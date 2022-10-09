@@ -1,5 +1,6 @@
 import { Tab, Tabs } from "@mui/material";
 import React, { useState } from "react";
+import AllBets from "./AllBets";
 import UserBets from "./UserBets";
 import UserTransactions from "./UserTransactions";
 
@@ -9,7 +10,7 @@ function a11yProps(index) {
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
-const UserHistory = ({ bets }) => {
+const UserHistory = ({ user, bets }) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => setValue(newValue);
@@ -25,7 +26,8 @@ const UserHistory = ({ bets }) => {
         <Tab label="Historique des Transaction" {...a11yProps(1)} />
       </Tabs>
 
-      <UserBets value={value} index={0} bets={bets} />
+      {/* <UserBets value={value} index={0} bets={bets} /> */}
+      <AllBets value={value} index={0} bets={bets} user={user} />
       <UserTransactions value={value} index={1} />
     </div>
   );

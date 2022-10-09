@@ -2,7 +2,8 @@ import { Grid } from "@mui/material";
 import React from "react";
 import { useParams } from "react-router-dom";
 import Page from "../components/Page";
-import { useSingleUserPariesQuery } from "../hooks/useSingleUserPariesQuery";
+import { useBetsQuery } from "../hooks/useBetsQuery";
+// import { useSingleUserPariesQuery } from "../hooks/useSingleUserPariesQuery";
 import { useSingleUserQuery } from "../hooks/useSingleUserQuery";
 import UserDetails from "./userPage/UserDetails";
 import UserHistory from "./userPage/UserHistory";
@@ -10,8 +11,9 @@ import UserHistory from "./userPage/UserHistory";
 const UserPage = () => {
   const { userId } = useParams();
   const { data: userDetails } = useSingleUserQuery(userId);
-  const betData = useSingleUserPariesQuery(userId);
+  const { data: bets } = useBetsQuery();
 
+  console.log(bets);
   return (
     <Page className={"_alm-userPage"}>
       <Grid container spacing={3}>
@@ -19,7 +21,7 @@ const UserPage = () => {
           <UserDetails userData={userDetails} />
         </Grid>
         <Grid item flexGrow={3} className={"_alm-userPage-histories"}>
-          <UserHistory bets={betData?.data} />
+          <UserHistory user={userDetails} bets={bets} />
         </Grid>
       </Grid>
     </Page>
