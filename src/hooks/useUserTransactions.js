@@ -2,7 +2,7 @@ import { colRef } from "../services";
 import { orderBy, query } from "firebase/firestore";
 import { useFirestoreQuery } from "@react-query-firebase/firestore";
 
-export const useSingleUserPariesQuery = (userId, onSuccess, onError) => {
+export const useUserTransactions = (userId, onSuccess, onError) => {
   const ref = query(
     colRef(`users/${userId}/transactions`),
     orderBy("addedOn", "desc")

@@ -9,6 +9,7 @@ import {
   HorizArrowsIcon,
 } from "../../components/Icons";
 import styled from "styled-components";
+import { renderDate } from "../../utils/helpers";
 
 const StatusIcon = styled.div`
   background-color: ${({ status }) =>
@@ -57,41 +58,16 @@ const SingleBet = ({ parieDetail }) => {
   };
 
   return (
-    <div
-      onClick={() => setShowDetails((prev) => !prev)}
-      className="singleParie"
-    >
+    <div className="singleParie">
       <div className="singleParie-top">
         <StatusIcon status={parieDetail?.status}>{renderStatus()}</StatusIcon>
         <div className="singleParie-top--icon"></div>
         <div className="singleParie-top--info">
-          <p>{parieDetail?.gameName}</p>
-          <p>{parieDetail?.totalParied} Francs</p>
-        </div>
-        <div className="singleParie-top--arrow">
-          {showDetails ? (
-            <ArrowBottom2Icon width={9} height={9} />
-          ) : (
-            <ArrowRightIcon width={9} height={9} />
-          )}
+          <p>{renderDate(parieDetail.addedOn.toDate())}</p>
+          <p>{parieDetail?.betAmount} Francs</p>
         </div>
       </div>
 
-      {showDetails && (
-        <div className="singleParie-details">
-          {parieDetail?.paries?.map((parie, i) => {
-            return (
-              <div
-                key={`${parie?.gameName}_${i}`}
-                className="singleParie-details-single"
-              >
-                <p>{renderTime(parie?.pariedOn?.toDate())}</p>
-                <p>{parie?.amountParied} Francs</p>
-              </div>
-            );
-          })}
-        </div>
-      )}
       <div className="singleParie-status">
         <StatusText status={parieDetail?.status}>{renderGameType()}</StatusText>
       </div>

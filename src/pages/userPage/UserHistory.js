@@ -1,5 +1,6 @@
 import { Tab, Tabs } from "@mui/material";
 import React, { useState } from "react";
+import { useUserTransactions } from "../../hooks/useUserTransactions";
 import AllBets from "./AllBets";
 import UserBets from "./UserBets";
 import UserTransactions from "./UserTransactions";
@@ -12,6 +13,10 @@ function a11yProps(index) {
 }
 const UserHistory = ({ user, bets }) => {
   const [value, setValue] = useState(0);
+
+  const { data: transactions } = useUserTransactions(user?.ref?.id);
+  console.log(user);
+  console.log(transactions);
 
   const handleChange = (event, newValue) => setValue(newValue);
 
@@ -28,7 +33,7 @@ const UserHistory = ({ user, bets }) => {
 
       {/* <UserBets value={value} index={0} bets={bets} /> */}
       <AllBets value={value} index={0} bets={bets} user={user} />
-      <UserTransactions value={value} index={1} />
+      <UserTransactions value={value} index={1} transactions={transactions} />
     </div>
   );
 };

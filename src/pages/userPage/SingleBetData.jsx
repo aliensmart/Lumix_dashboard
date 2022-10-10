@@ -1,16 +1,26 @@
 import React from "react";
+import { useBetRender } from "../../hooks/useBetRender";
 import { renderDate } from "../../utils/helpers";
+import SingleBet from "./SingleBet";
 
 const SingleBetData = ({ bet, user }) => {
-  console.log(user);
-  console.log(bet);
+  const { data: betData } = useBetRender(bet?.ref, user);
   return (
-    <div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <h5>{bet?.betName}</h5>
-        <p>{renderDate(bet?.endsOn?.toDate())}</p>
-      </div>
-    </div>
+    <>
+      {betData?.length > 0 && (
+        <div style={{ marginTop: "2rem" }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <h5>{bet?.betName}</h5>
+            <p>{renderDate(bet?.endsOn?.toDate())}</p>
+          </div>
+          <div style={{ display: "grid", gap: "2rem" }}>
+            {betData?.map((userBet, i) => {
+              return <SingleBet parieDetail={userBet} />;
+            })}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
