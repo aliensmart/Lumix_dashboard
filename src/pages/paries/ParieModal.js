@@ -64,6 +64,7 @@ function ParieModal({ open, title, setOpen }) {
       beters: 0,
       addedOn: currentTime(),
       totalBet: 0,
+      minBet: 500,
     };
 
     await addDocument("bets", betData);
