@@ -8,6 +8,7 @@ import { TABLE_TRANSLATE } from "../utils/constants";
 import CustomToolbar from "./paries/CustomToolbar";
 import PlayModal from "./paries/PlayModal";
 import { renderDate } from "../utils/helpers";
+import SelectedBetUsers from "./paries/SelectedBetUsers";
 
 /**
  * This will be the file where Admins can create new challenges
@@ -153,17 +154,26 @@ const Paries = () => {
     allRowsSelected,
     rowsSelected
   ) => {
-    const parie = data[currentRowsSelected?.[0]?.dataIndex];
-    // setSelectedDevId(userId);
-    setPlayed(parie?.played);
-    setParieId(parie?.id);
+    // setSelectedParie(parie);
+    console.log(rowsSelected);
+    if (rowsSelected.length > 0) {
+      const parie = data[currentRowsSelected?.[0]?.dataIndex];
+      // setSelectedDevId(userId);
+      setPlayed(parie?.played);
+      setParieId(parie?.id);
+    } else {
+      setParieId("");
+    }
   };
 
   const options = {
     filterType: "dropdown",
     responsive: "standard",
     selectableRows: "single",
-    // onRowClick: handleRowClicked,
+    // onRowClick: (rowData, rowState) => {
+    //   console.log(rowData);
+    //   console.log(rowState);
+    // },
     // setCellProps: () => ({
     //   style: { minWidth: "15rem", padding: "16px 26px", textAlign: "left" },
     // }),
@@ -177,8 +187,11 @@ const Paries = () => {
         setIsPlay={setIsPlay}
       />
     ),
+
     ...TABLE_TRANSLATE,
   };
+
+  console.log(parieId);
   return (
     <Page className={"_lmParies"}>
       <ParieModal open={open} setOpen={setOpen} title={"Ajoutez une parie"} />
@@ -224,6 +237,7 @@ const Paries = () => {
           options={options}
         />
       </Stack>
+      {parieId && <SelectedBetUsers betId={parieId} />}
     </Page>
   );
 };

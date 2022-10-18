@@ -5,7 +5,7 @@ import { colRef } from "../services";
 
 export const useBetRender = (betRef, user, onSuccess, onError) => {
   const betsRef = useMemo(() => {
-    if (!betRef?.path) return;
+    if (!betRef?.path || !user?.ref) return;
     const ref = query(
       colRef(`${betRef?.path}/usersBets`),
       where("playerRef", "==", user?.ref),
