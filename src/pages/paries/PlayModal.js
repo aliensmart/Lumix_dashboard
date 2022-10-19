@@ -111,7 +111,7 @@ function PlayModal({ open, setOpen, parieId }) {
                 registerObj={{
                   required: true,
                   min: 1,
-                  max: betData?.beters ?? 1,
+                  max: betData?.betsCount ?? 1,
                 }}
                 type="number"
               />

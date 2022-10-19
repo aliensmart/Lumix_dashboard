@@ -108,6 +108,22 @@ const Paries = () => {
       },
     },
     {
+      name: "betsCount",
+      label: "Nombre de Paries",
+      options: {
+        filter: true,
+        sort: true,
+        setCellProps: () => ({
+          style: {
+            minWidth: "15rem",
+            padding: "16px 26px",
+            textAlign: "left",
+            whiteSpace: "nowrap",
+          },
+        }),
+      },
+    },
+    {
       name: "beters",
       label: "Nombre de Joueur",
       options: {
@@ -191,7 +207,6 @@ const Paries = () => {
     ...TABLE_TRANSLATE,
   };
 
-  console.log(parieId);
   return (
     <Page className={"_lmParies"}>
       <ParieModal open={open} setOpen={setOpen} title={"Ajoutez une parie"} />
