@@ -35,7 +35,16 @@ export const user = {
   userName: "",
 };
 
-export const userBet = {};
+export const userBet = {
+  addedOn: currentTime(),
+  betAmount: 0,
+  played: false,
+  isChosen: false,
+  lastUpdated: null,
+  playerRef: null,
+  status: "ONGOING",
+  won: 0,
+};
 
 export const admin = {};
 

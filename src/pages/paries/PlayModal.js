@@ -102,7 +102,7 @@ function PlayModal({ open, setOpen, parieId }) {
             <Grid item lg={12} md={12} sm={12}>
               <LmInputLabel
                 label={"Nomber de gagnant"}
-                desc={`Choisir le nombre de gagnant, ${betData?.beters} joueur(s) actuel`}
+                desc={`Choisir le nombre de gagnant, ${betData?.betsCount} jeux actuel`}
                 labelName="winnersNumber"
                 errors={errors}
                 isValid={touchedFields}
