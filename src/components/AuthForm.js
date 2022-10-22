@@ -54,7 +54,6 @@ const AuthForm = ({
         />
       </FormGroup>
 
-      <hr />
       <Button
         size="lg"
         className="bg-gradient-theme-left border-0"

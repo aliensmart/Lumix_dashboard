@@ -1,6 +1,6 @@
-import AuthForm, { STATE_LOGIN } from './components/AuthForm';
-import Page from '../components/Page';
-import React from 'react';
+import AuthForm, { STATE_LOGIN } from "./components/AuthForm";
+import Page from "../components/Page";
+import React from "react";
 import {
   Button,
   Card,
@@ -10,7 +10,7 @@ import {
   Modal,
   ModalBody,
   Row,
-} from 'reactstrap';
+} from "reactstrap";
 
 class AuthModalPage extends React.Component {
   state = {
@@ -24,7 +24,7 @@ class AuthModalPage extends React.Component {
     });
   };
 
-  handleAuthState = authState => {
+  handleAuthState = (authState) => {
     this.setState({
       authState,
     });
@@ -35,10 +35,10 @@ class AuthModalPage extends React.Component {
       <button
         className="close"
         style={{
-          position: 'absolute',
-          top: '15px',
-          right: '20px',
-          fontSize: '3rem',
+          position: "absolute",
+          top: "15px",
+          right: "20px",
+          fontSize: "3rem",
         }}
         onClick={this.toggle}
       >
@@ -49,35 +49,13 @@ class AuthModalPage extends React.Component {
     return (
       <Page
         title="Login Modal"
-        breadcrumbs={[{ name: 'login modal', active: true }]}
+        breadcrumbs={[{ name: "login modal", active: true }]}
       >
         <Row>
-          <Col md="12" sm="12" xs="12">
-            <Card>
-              <CardHeader>Login Modal Example</CardHeader>
-              <CardBody>
-                <Button color="danger" onClick={this.toggle}>
-                  Click to Login
-                </Button>
-                <Modal
-                  isOpen={this.state.show}
-                  toggle={this.toggle}
-                  size="sm"
-                  backdrop="static"
-                  backdropClassName="modal-backdrop-light"
-                  external={externalCloseBtn}
-                  centered
-                >
-                  <ModalBody>
-                    <AuthForm
-                      authState={this.state.authState}
-                      onChangeAuthState={this.handleAuthState}
-                    />
-                  </ModalBody>
-                </Modal>
-              </CardBody>
-            </Card>
-          </Col>
+          <AuthForm
+            authState={this.state.authState}
+            onChangeAuthState={this.handleAuthState}
+          />
         </Row>
       </Page>
     );

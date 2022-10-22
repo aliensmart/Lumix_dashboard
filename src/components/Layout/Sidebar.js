@@ -32,7 +32,7 @@ const LogOut = styled.div`
 
 const Sidebar = () => {
   const { data: adminData } = useAdminCheckerQuery();
-  const onLogOut = () => {
+  const onLogOutFunc = () => {
     onLogOut();
   };
 
@@ -68,7 +68,7 @@ const Sidebar = () => {
           <NavItem
             className={bem.e("nav-item")}
             style={{ marginTop: "1rem" }}
-            onClick={onLogOut}
+            onClick={onLogOutFunc}
           >
             <LogOut>
               <p>Se deconnecter</p>

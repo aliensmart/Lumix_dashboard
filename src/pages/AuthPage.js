@@ -1,22 +1,31 @@
 import AuthForm from "../components/AuthForm";
 import React from "react";
 import { Card, Col, Row } from "reactstrap";
+import Page from "../components/Page";
 
 const AuthPage = () => {
   return (
-    <Row
+    <div
       style={{
-        height: "100vh",
-        justifyContent: "center",
+        display: "flex",
         alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+        backgroundColor: "#F2F5F7",
+        // color: "white",
       }}
     >
-      <Col md={6} lg={4}>
-        <Card body>
-          <AuthForm />
-        </Card>
-      </Col>
-    </Row>
+      <div
+        style={{
+          padding: "2rem",
+          borderRadius: "5px",
+          backgroundColor: "white",
+          boxShadow: "-3px 9px 22px 2px rgba(0,0,0,0.26)",
+        }}
+      >
+        <AuthForm />
+      </div>
+    </div>
   );
 };
 
