@@ -2,7 +2,7 @@ import { currentTime, docRef } from "../services";
 
 const defaulAdminRole = docRef("/adminStatus/EDITOR");
 
-export const bet = {
+export const BET = {
   addedOn: currentTime(),
   betName: "",
   beters: 0,

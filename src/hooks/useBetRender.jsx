@@ -37,7 +37,7 @@ export const useBetRender = (betRef, user, onSuccess, onError) => {
         }
         return [];
       },
-      enabled: !!betRef?.id,
+      enabled: !!betRef?.id && !!user?.ref,
     }
   );
 };

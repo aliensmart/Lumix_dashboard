@@ -7,7 +7,7 @@ export const useBetUsers = (betId) => {
     colRef(`bets/${betId}/usersBets`),
     orderBy("addedOn", "desc")
   );
-  console.log(betId);
+  // console.log(betId);
   return useFirestoreQuery(
     ["singleBetsUsers", betId],
     ref,

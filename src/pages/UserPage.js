@@ -13,7 +13,7 @@ const UserPage = () => {
   const { data: userDetails } = useSingleUserQuery(userId);
   const { data: bets } = useBetsQuery();
 
-  console.log(bets);
+  // console.log(bets);
   return (
     <Page className={"_alm-userPage"}>
       <Grid container spacing={3}>

@@ -21,7 +21,7 @@ const AuthForm = ({
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const onLog = async (e) => {
-    console.log(password);
+    // console.log(password);
     setLoading(true);
     await onLogin(email, password);
     setLoading(true);

@@ -15,8 +15,8 @@ const UserHistory = ({ user, bets }) => {
   const [value, setValue] = useState(0);
 
   const { data: transactions } = useUserTransactions(user?.ref?.id);
-  console.log(user);
-  console.log(transactions);
+  // console.log(user);
+  // console.log(transactions);
 
   const handleChange = (event, newValue) => setValue(newValue);
 

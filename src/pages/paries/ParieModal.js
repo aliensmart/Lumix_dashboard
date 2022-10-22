@@ -21,6 +21,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
 import { addDocument, colRef, currentTime } from "../../services";
 import { Timestamp } from "firebase/firestore";
+import { BET } from "../../utils/AllDefaultData";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -39,9 +40,9 @@ function ParieModal({ open, title, setOpen }) {
     handleSubmit,
   } = useForm({
     defaultValues: {
+      ...BET,
       betName: `parie_${random}`,
-      // minBet: "500",
-      // winnersNumber: "20",
+      addedOn: currentTime(),
     },
   });
 
@@ -54,17 +55,10 @@ function ParieModal({ open, title, setOpen }) {
     const endOn = value.setUTCHours(18, 30, 0);
     // Timestamp.
     const betData = {
-      betName: data?.betName,
-      // minBet: parseInt(data?.minBet),
-      // winnersNumber: parseInt(data?.winnersNumber),
+      ...data,
       startsOn: new Date(startOn),
       endsOn: new Date(endOn),
-      status: "ONGOING",
-      played: false,
-      beters: 0,
       addedOn: currentTime(),
-      totalBet: 0,
-      minBet: 500,
     };
 
     await addDocument("bets", betData);
@@ -72,17 +66,17 @@ function ParieModal({ open, title, setOpen }) {
     setLoading(false);
     random = Math.random().toString(36).substring(2, 15);
     reset({
+      ...BET,
       betName: `parie_${random}`,
-      // minBet: "500",
-      // winnersNumber: "20",
+      addedOn: currentTime(),
     });
   };
   const handleClose = () => {
     // random = Math.random().toString(36).substring(2, 15);
     reset({
+      ...BET,
       betName: `parie_${random}`,
-      // minBet: "500",
-      // winnersNumber: "20",
+      addedOn: currentTime(),
     });
     setOpen(false);
   };

@@ -32,7 +32,7 @@ const InviteDialog = ({ open, onClose, roles }) => {
 
   const {
     register,
-    formState: { errors, touchedFields },
+    formState: { errors },
     reset,
     handleSubmit,
   } = useForm({
@@ -52,6 +52,7 @@ const InviteDialog = ({ open, onClose, roles }) => {
     const adminData = {
       ...formData,
       role: roleRef?.[0].ref,
+      createdOn: currentTime(),
     };
 
     const { data: userId } = await backendRegist(formData?.email, password);
@@ -71,7 +72,11 @@ const InviteDialog = ({ open, onClose, roles }) => {
 
     addDocument("mail", emailData);
     onClose();
-    reset({ ...ADMINDEFAULT, role: ADMINDEFAULT?.role?.id });
+    reset({
+      ...ADMINDEFAULT,
+      role: ADMINDEFAULT?.role?.id,
+      createdOn: currentTime(),
+    });
   };
 
   return (

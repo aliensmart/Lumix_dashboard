@@ -5,7 +5,7 @@ import { TABLE_TRANSLATE } from "../../utils/constants";
 import { renderDate } from "../../utils/helpers";
 
 const SelectedBetUsers = ({ betId }) => {
-  console.log(betId);
+  // console.log(betId);
   const { data } = useBetUsers(betId);
 
   const columns = [

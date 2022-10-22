@@ -171,7 +171,7 @@ const Paries = () => {
     rowsSelected
   ) => {
     // setSelectedParie(parie);
-    console.log(rowsSelected);
+    // console.log(rowsSelected);
     if (rowsSelected.length > 0) {
       const parie = data[currentRowsSelected?.[0]?.dataIndex];
       // setSelectedDevId(userId);
