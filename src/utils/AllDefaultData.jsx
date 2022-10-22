@@ -1,4 +1,6 @@
-import { currentTime } from "../services";
+import { currentTime, docRef } from "../services";
+
+const defaulAdminRole = docRef("/adminStatus/EDITOR");
 
 export const bet = {
   addedOn: currentTime(),
@@ -46,6 +48,15 @@ export const userBet = {
   won: 0,
 };
 
-export const admin = {};
+export const ADMINDEFAULT = {
+  createdOn: currentTime(),
+  email: "",
+  fullName: "",
+  phoneNumber: "",
+  role: defaulAdminRole,
+  staus: true,
+  profile: "",
+  city: "",
+};
 
 export const betStatus = {};

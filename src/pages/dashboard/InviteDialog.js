@@ -21,6 +21,7 @@ import {
   createDocFromId,
   currentTime,
 } from "../../services";
+import { ADMINDEFAULT } from "../../utils/AllDefaultData";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -35,13 +36,7 @@ const InviteDialog = ({ open, onClose, roles }) => {
     reset,
     handleSubmit,
   } = useForm({
-    defaultValues: {
-      fullName: "",
-      email: "",
-      phoneNumber: "",
-      ville: "",
-      role: "Editeur",
-    },
+    defaultValues: { ...ADMINDEFAULT, role: ADMINDEFAULT?.role?.id },
   });
 
   const onSubmit = async (formData) => {
@@ -57,8 +52,6 @@ const InviteDialog = ({ open, onClose, roles }) => {
     const adminData = {
       ...formData,
       role: roleRef?.[0].ref,
-      createdOn: currentTime(),
-      profile: "",
     };
 
     const { data: userId } = await backendRegist(formData?.email, password);
@@ -78,13 +71,7 @@ const InviteDialog = ({ open, onClose, roles }) => {
 
     addDocument("mail", emailData);
     onClose();
-    reset({
-      fullName: "",
-      email: "",
-      phoneNumber: "",
-      city: "",
-      role: "",
-    });
+    reset({ ...ADMINDEFAULT, role: ADMINDEFAULT?.role?.id });
   };
 
   return (
