@@ -3,16 +3,7 @@ import React from "react";
 
 const AuthPage = () => {
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh",
-        backgroundColor: "#F2F5F7",
-        // color: "white",
-      }}
-    >
+    <div className="authPage">
       <div
         style={{
           padding: "2rem",

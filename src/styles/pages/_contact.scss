@@ -1,0 +1,27 @@
+.contact {
+  background-color: #f2f5f7;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__container {
+    max-width: 1440px;
+    background-color: white;
+    padding: 3rem;
+    // display: flex;
+    &--content {
+      display: flex;
+      // flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+
+      &_info {
+        p {
+          margin: 0;
+        }
+      }
+    }
+  }
+}
