@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import LmInputLabel from "../components/LmInputLabel";
+import "react-toastify/dist/ReactToastify.css";
 import { addDocument } from "../services";
 
 const Contact = () => {
+  const [isSent, setIsSent] = useState(false);
   const {
     register,
     formState: { errors, touchedFields },
@@ -34,13 +37,16 @@ const Contact = () => {
       };
 
       await addDocument("mail", emailData);
+      toast.success("Message envoyé avec succès");
       reset({
         fullName: "",
         email: "",
         message: "",
         subject: "",
       });
+      return;
     }
+    toast.error("Veuillez remplir tous les champs");
   };
   return (
     <div className="contact">
@@ -114,6 +120,7 @@ const Contact = () => {
             Notre politique de confidentialiter{" "}
           </a>
         </div>
+        <ToastContainer />
       </div>
     </div>
   );
