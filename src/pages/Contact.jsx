@@ -11,6 +11,11 @@ const Contact = () => {
   } = useForm({
     defaultValues: {},
   });
+
+  const onSubmit = (data) => {
+    console.log(data);
+    reset();
+  };
   return (
     <div className="contact">
       <div className="contact__container">
@@ -46,7 +51,16 @@ const Contact = () => {
             />
             <div>
               <label htmlFor="message">Message</label>
-              <textarea placeholder="" id="message"></textarea>
+              <textarea
+                placeholder=""
+                id="message"
+                {...register("message")}
+              ></textarea>
+            </div>
+            <div>
+              <button type="submit" onClick={handleSubmit(onSubmit)}>
+                Envoyer
+              </button>
             </div>
           </div>
           <div className="contact__container--content_info">
