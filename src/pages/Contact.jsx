@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import LmInputLabel from "../components/LmInputLabel";
+import { addDocument } from "../services";
 
 const Contact = () => {
   const {
@@ -17,14 +18,29 @@ const Contact = () => {
     },
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-    reset({
-      fullName: "",
-      email: "",
-      message: "",
-      subject: "",
-    });
+  const onSubmit = async (data) => {
+    if (data?.fullName && data?.email && data?.message && data?.subject) {
+      const emailData = {
+        to: ["aide@cash-lumiere.com"],
+        message: {
+          html: `<div>
+        <p>Nom Complet: ${data.fullName}</p>
+        <p>Email: <a href=${data.email}>${data.email}</a></p>
+        ${data?.message}
+        </div>`,
+          subject: data?.subject,
+          text: "",
+        },
+      };
+
+      await addDocument("mail", emailData);
+      reset({
+        fullName: "",
+        email: "",
+        message: "",
+        subject: "",
+      });
+    }
   };
   return (
     <div className="contact">
@@ -42,6 +58,7 @@ const Contact = () => {
               isValid={touchedFields}
               register={register}
               labelName="fullName"
+              registerObj={{ required: true }}
             />
             <LmInputLabel
               label={"email"}
@@ -50,6 +67,11 @@ const Contact = () => {
               errors={errors}
               isValid={touchedFields}
               register={register}
+              registerObj={{
+                pattern: /^\S+@\S+$/i,
+                minLength: 3,
+                required: true,
+              }}
               labelName="email"
             />
             <LmInputLabel
@@ -58,13 +80,16 @@ const Contact = () => {
               isValid={touchedFields}
               register={register}
               labelName="subject"
+              placeHolder={"a propos de ..."}
+              registerObj={{ required: true }}
             />
             <div className="contact__container--content_form--textarea">
               <label htmlFor="message">Message</label>
               <textarea
-                placeholder=""
+                // placeholder=""
                 id="message"
-                {...register("message")}
+                {...register("message", { required: true })}
+                placeholder="Votre message"
               ></textarea>
             </div>
             <div className="contact__container--content_form--submit">
