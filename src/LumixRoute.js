@@ -7,6 +7,7 @@ import "./styles/reduction.scss";
 import AuthPage from "./pages/AuthPage";
 import { useAdminCheckerQuery } from "./hooks/useAminCheckerQuery";
 import Contact from "./pages/Contact";
+import Terms from "./pages/Terms";
 
 const DashboardPage = React.lazy(() => import("./pages/DashboardPage"));
 const UsersPage = React.lazy(() => import("./pages/UsersPage"));
@@ -25,6 +26,7 @@ function LumixRoute({ breakpoint }) {
         <Routes>
           <Route exact path="/" element={<Contact />} />
           <Route exact path="/toutAdm" element={<AuthPage />} />
+          <Route exact path="/terms" element={<Terms />} />
         </Routes>
       ) : adminData?.ref?.id ? (
         <MainLayout breakpoint={breakpoint}>

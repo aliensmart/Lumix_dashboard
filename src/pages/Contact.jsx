@@ -51,7 +51,10 @@ const Contact = () => {
           </div>
           <div className="contact__container--content_info">
             <p>
-              Notre email: <span>aide@cash-lumiere-lumix.com</span>
+              Notre email:{" "}
+              <a href="mailto:aide@cash-lumiere-lumix.com">
+                aide@cash-lumiere-lumix.com
+              </a>
             </p>
             <p>
               Notre Numero de tel: <span>+22507789045</span>
