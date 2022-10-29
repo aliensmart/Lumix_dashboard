@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import { onLogin } from "../services";
+import { useNavigate } from "react-router-dom";
 
 const AuthForm = ({
   usernameLabel = "Email",
@@ -17,14 +18,23 @@ const AuthForm = ({
   },
   children,
 }) => {
+  const history = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const onLog = async (e) => {
     // console.log(password);
     setLoading(true);
-    await onLogin(email, password);
-    setLoading(true);
+    await onLogin(email, password)
+      .then((res) => {
+        setLoading(false);
+        // switch to dashboard
+        history("/");
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+    setLoading(false);
     e.preventDefault();
   };
   return (
