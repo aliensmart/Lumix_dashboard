@@ -9,12 +9,22 @@ const Contact = () => {
     reset,
     handleSubmit,
   } = useForm({
-    defaultValues: {},
+    defaultValues: {
+      fullName: "",
+      email: "",
+      message: "",
+      subject: "",
+    },
   });
 
   const onSubmit = (data) => {
     console.log(data);
-    reset();
+    reset({
+      fullName: "",
+      email: "",
+      message: "",
+      subject: "",
+    });
   };
   return (
     <div className="contact">
@@ -49,7 +59,7 @@ const Contact = () => {
               register={register}
               labelName="subject"
             />
-            <div>
+            <div className="contact__container--content_form--textarea">
               <label htmlFor="message">Message</label>
               <textarea
                 placeholder=""
@@ -57,7 +67,7 @@ const Contact = () => {
                 {...register("message")}
               ></textarea>
             </div>
-            <div>
+            <div className="contact__container--content_form--submit">
               <button type="submit" onClick={handleSubmit(onSubmit)}>
                 Envoyer
               </button>
@@ -73,10 +83,8 @@ const Contact = () => {
             </p>
           </div>
         </div>
-        <div>
-          <a href="/terms" className="contact__container--content_btn">
-            Nos termes et conditions
-          </a>
+        <div className="contact__container--links">
+          <a href="/terms">Nos termes et conditions</a>
           <a href="/privacy-policy" className="contact__container--content_btn">
             Notre politique de confidentialiter{" "}
           </a>
