@@ -52,9 +52,7 @@ const Contact = () => {
           <div className="contact__container--content_info">
             <p>
               Notre email:{" "}
-              <a href="mailto:aide@cash-lumiere-lumix.com">
-                aide@cash-lumiere-lumix.com
-              </a>
+              <a href="mailto:aide@cash-lumiere.com">aide@cash-lumiere.com</a>
             </p>
             <p>
               Notre Numero de tel: <span>+22507789045</span>

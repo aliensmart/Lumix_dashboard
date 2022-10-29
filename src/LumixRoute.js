@@ -8,6 +8,7 @@ import AuthPage from "./pages/AuthPage";
 import { useAdminCheckerQuery } from "./hooks/useAminCheckerQuery";
 import Contact from "./pages/Contact";
 import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
 
 const DashboardPage = React.lazy(() => import("./pages/DashboardPage"));
 const UsersPage = React.lazy(() => import("./pages/UsersPage"));
@@ -27,6 +28,7 @@ function LumixRoute({ breakpoint }) {
           <Route exact path="/" element={<Contact />} />
           <Route exact path="/toutAdm" element={<AuthPage />} />
           <Route exact path="/terms" element={<Terms />} />
+          <Route path="/privacy-policy" element={<Privacy />} />
         </Routes>
       ) : adminData?.ref?.id ? (
         <MainLayout breakpoint={breakpoint}>
