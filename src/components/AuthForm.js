@@ -40,13 +40,6 @@ const AuthForm = ({
   return (
     <Form>
       <div className="text-center pb-4">
-        {/* <img
-              src={logo200Image}
-              className="rounded"
-              style={{ width: 60, height: 60, cursor: 'pointer' }}
-              alt="logo"
-              onClick={onLogoClick}
-            /> */}
         <p>LUMIX</p>
       </div>
       <FormGroup>
