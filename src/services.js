@@ -50,7 +50,7 @@ export const firebaseConfig = {
 //   storageBucket: "lumix-p.appspot.com",
 //   messagingSenderId: "72870788708",
 //   appId: "1:72870788708:web:b51240ffd1b4a1a0566971",
-//   measurementId: "G-6EEXK7CTL1"
+//   measurementId: "G-6EEXK7CTL1",
 // };
 
 // Initialize Firebase
