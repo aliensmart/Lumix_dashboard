@@ -40,16 +40,22 @@ const Sidebar = () => {
     <aside className={bem.b()} data-image={sidebarBgImage}>
       <div className={bem.e("background")} style={sidebarBackground} />
       <div className={bem.e("content")}>
-        <Navbar>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            marginTop: "1rem",
+          }}
+        >
           <img
             src={logo200Image}
-            width="40"
-            height="30"
-            className="pr-2"
+            width="60"
+            height="50"
+            // className="pr-2"
             alt=""
           />
-          <span className="text-white">LUMIX</span>
-        </Navbar>
+          <span className="text-white ">LUMIX</span>
+        </div>
         <Nav vertical>
           {adminData?.ref?.id &&
             navItems.map(({ to, name, exact, Icon }, index) => (
