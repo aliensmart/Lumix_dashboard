@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import LmInputLabel from "../components/LmInputLabel";
@@ -6,7 +6,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { addDocument } from "../services";
 
 const Contact = () => {
-  const [isSent, setIsSent] = useState(false);
   const {
     register,
     formState: { errors, touchedFields },
@@ -109,9 +108,9 @@ const Contact = () => {
               Notre email:{" "}
               <a href="mailto:aide@cash-lumiere.com">aide@cash-lumiere.com</a>
             </p>
-            <p>
-              Notre Numero de tel: <span>+22507789045</span>
-            </p>
+            <p>Notre Numero de tel:</p>
+            <p>+225-01-70-50-60-99</p>
+            <p>+225-27-21-54-07-00</p>
           </div>
         </div>
         <div className="contact__container--links">
