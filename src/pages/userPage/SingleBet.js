@@ -34,20 +34,20 @@ const SingleBet = ({ parieDetail }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const renderStatus = () => {
-    if (parieDetail?.status === "WON") {
+    if (parieDetail?.status === "ENDED" && !parieDetail?.isChosen) {
       return <ArrowDownIcon />;
     }
-    if (parieDetail?.status === "LOST") {
+    if (parieDetail?.status === "ENDED" && parieDetail?.isChosen) {
       return <ArrowUpIcon />;
     }
     return <HorizArrowsIcon />;
   };
 
   const renderGameType = () => {
-    if (parieDetail?.status === "WON") {
+    if (parieDetail?.status === "ENDED" && parieDetail?.isChosen) {
       return "Jeux Gagner";
     }
-    if (parieDetail?.status === "LOST") {
+    if (parieDetail?.status === "ENDED" && !parieDetail?.isChosen) {
       return "Jeux Perdu";
     }
     return "Jeux En Cours";
@@ -60,7 +60,17 @@ const SingleBet = ({ parieDetail }) => {
   return (
     <div className="singleParie">
       <div className="singleParie-top">
-        <StatusIcon status={parieDetail?.status}>{renderStatus()}</StatusIcon>
+        <StatusIcon
+          status={
+            parieDetail?.status === "ENDED" && parieDetail?.isChosen
+              ? "WON"
+              : parieDetail?.status === "ENDED" && parieDetail?.isChosen
+              ? "LOST"
+              : "PENDING"
+          }
+        >
+          {renderStatus()}
+        </StatusIcon>
         <div className="singleParie-top--icon"></div>
         <div className="singleParie-top--info">
           <p>{renderDate(parieDetail.addedOn.toDate())}</p>
@@ -69,7 +79,17 @@ const SingleBet = ({ parieDetail }) => {
       </div>
 
       <div className="singleParie-status">
-        <StatusText status={parieDetail?.status}>{renderGameType()}</StatusText>
+        <StatusText
+          status={
+            parieDetail?.status === "ENDED" && parieDetail?.isChosen
+              ? "WON"
+              : parieDetail?.status === "ENDED" && parieDetail?.isChosen
+              ? "LOST"
+              : "PENDING"
+          }
+        >
+          {renderGameType()}
+        </StatusText>
       </div>
     </div>
   );

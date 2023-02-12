@@ -1,12 +1,17 @@
-import { colRef } from "../services";
-import { orderBy, query } from "firebase/firestore";
+import { colRef, docRef } from "../services";
+import { orderBy, query, where } from "firebase/firestore";
 import { useFirestoreQuery } from "@react-query-firebase/firestore";
 import { useRolesQUery } from "./useRolesData";
 
 export const useAdminsQuery = (onSuccess, onError) => {
   const { data: roles } = useRolesQUery();
+  const roleRef = docRef("roles/ADMIN");
 
-  const ref = query(colRef("admins"), orderBy("createdOn", "desc"));
+  const ref = query(
+    colRef("users"),
+    where("role", "==", roleRef),
+    orderBy("addedOn", "desc")
+  );
   return useFirestoreQuery(
     ["adminsList"],
     ref,
@@ -24,7 +29,8 @@ export const useAdminsQuery = (onSuccess, onError) => {
             return {
               ...adminData,
               id: dataDoc?.id,
-              role: roles[adminData?.role?.id]?.status,
+              role: adminData?.role?.id,
+              roleRef: adminData?.role,
             };
           });
           return data;
