@@ -22,7 +22,7 @@ const UserDetails = ({ userData, allRoles }) => {
       role: allRoles?.[event.target.value]?.ref,
     });
   };
-  console.log(userData);
+  // console.log(userData);
 
   useEffect(() => {
     console.log(role);
@@ -55,9 +55,7 @@ const UserDetails = ({ userData, allRoles }) => {
       <div className="_alm-userPage-details__wrapper-nameEmai">
         <p className="userfullName">{userData?.fullName}</p>
         {userData?.email && <p className="email">{userData?.email}</p>}
-        {userData?.phoneNumber && (
-          <p className="email">{userData?.phoneNumber}</p>
-        )}
+        {userData?.phone && <p className="email">{userData?.phone}</p>}
         <p>{allRoles?.[userData?.role?.id]?.label}</p>
       </div>
       <div

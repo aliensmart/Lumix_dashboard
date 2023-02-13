@@ -16,7 +16,11 @@ export const useSingleUserQuery = (userId, onSuccess, onError) => {
       onSuccess,
       onError,
       select: (data) => {
-        return { ...data, ref: ref };
+        return {
+          ...data,
+          ref: ref,
+          fullName: `${data?.firstName} ${data?.lastName}`,
+        };
       },
       enabled: !!userId,
     }

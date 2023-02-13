@@ -16,7 +16,10 @@ export const useCurrentAdmin = (userId, onSuccess, onError) => {
       onSuccess,
       onError,
       select: (doc) => {
-        return { ...doc?.data() };
+        return {
+          ...doc?.data(),
+          fullName: `${doc?.data()?.firstName} ${doc?.data()?.lastName}`,
+        };
       },
       enabled: !!userId,
     }

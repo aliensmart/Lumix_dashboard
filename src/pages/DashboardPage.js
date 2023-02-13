@@ -32,25 +32,9 @@ const DashboardPage = () => {
 
   const { data: roles } = useRolesQUery();
 
-  const { data: admins } = useAdminsQuery();
-
-  const handleUpload = async (e) => {
-    const file = e.target.files[0];
-    const storageRef = ref(
-      storage,
-      `admins/${adminData?.ref.id}/profile/${file.name}`
-    );
-    const uploadTask = await uploadBytes(storageRef, file);
-    const downloaUrl = await getDownloadURL(uploadTask.ref);
-
-    addOrUpdate(`admins/${adminData?.ref.id}`, { profile: downloaUrl });
-
-    e.persist();
-  };
-
   return (
     <Page className="_dashboard">
-      <AdminData roles={roles} data={data} handleUpload={handleUpload} />
+      <AdminData roles={roles} data={data} />
       <FinanceSection />
       {/* <AdminsList admins={admins} roles={Object?.values(roles ?? {})} /> */}
     </Page>
