@@ -4,14 +4,15 @@ import React, { useMemo, useState } from "react";
 import { TABLE_TRANSLATE } from "../../utils/constants";
 import InviteDialog from "./InviteDialog";
 
-const AdminsList = ({ admins, roles }) => {
+const AdminsList = ({ admins }) => {
   const [open, setOpen] = useState(false);
-  const rolesList = useMemo(() => {
-    if (roles?.length <= 0) return;
-    return roles?.map((role) => {
-      return { value: role?.status, ref: role?.ref, label: role?.status };
-    });
-  }, [roles?.length]);
+
+  const roles = [
+    { label: "En attente", value: "Pending" },
+    { label: "En cours", value: "In Progress" },
+    { label: "Terminé", value: "Completed" },
+    { label: "Annulé", value: "Cancelled" },
+  ];
   const columns = [
     {
       name: "id",
@@ -39,13 +40,14 @@ const AdminsList = ({ admins, roles }) => {
       },
     },
     {
-      name: "city",
-      label: "Ville",
+      name: "amount",
+      label: "Montant(XOF)",
       options: {
         filter: true,
         sort: true,
         setCellProps: () => ({
           style: {
+            // minWidth: "15rem",
             padding: "16px 26px",
             textAlign: "left",
             whiteSpace: "nowrap",
@@ -69,7 +71,7 @@ const AdminsList = ({ admins, roles }) => {
     },
 
     {
-      name: "phoneNumber",
+      name: "phone",
       label: "NUMERO DE TELEPHONE",
       options: {
         filter: true,
@@ -85,7 +87,7 @@ const AdminsList = ({ admins, roles }) => {
       },
     },
     {
-      name: "role",
+      name: "status",
       label: "ROLE",
       options: {
         filter: true,
@@ -98,6 +100,25 @@ const AdminsList = ({ admins, roles }) => {
             whiteSpace: "nowrap",
           },
         }),
+        customBodyRender: (value, tableMeta, updateValue) => {
+          const role = roles?.find((role) => role?.value === value);
+          return (
+            <select
+              value={role?.value}
+              onChange={(e) => {
+                e.stopPropagation();
+                updateValue(e.target.value);
+              }}
+            >
+              <option value={role?.value}>{role?.label}</option>
+              {roles
+                ?.filter((el) => el.value !== role.value)
+                ?.map((role) => {
+                  return <option value={role?.value}>{role?.label}</option>;
+                })}
+            </select>
+          );
+        },
       },
     },
   ];
@@ -120,7 +141,6 @@ const AdminsList = ({ admins, roles }) => {
   };
   return (
     <div className="_dashboard--admins">
-      <InviteDialog open={open} onClose={onClose} roles={rolesList} />
       <div className="_dashboard-section">
         <h3>List des retrait en entente</h3>
       </div>

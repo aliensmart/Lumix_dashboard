@@ -50,6 +50,7 @@ const DashboardPage = () => {
           return {
             ref: doc.ref,
             ...doc.data(),
+            id: doc.id,
             fullName: parentData?.firstName + " " + parentData?.lastName,
             email: parentData?.email,
             phone: parentData?.phone,
@@ -76,7 +77,7 @@ const DashboardPage = () => {
     <Page className="_dashboard">
       <AdminData roles={roles} data={data} />
       <FinanceSection />
-      {/* <AdminsList admins={admins} roles={Object?.values(roles ?? {})} /> */}
+      <AdminsList admins={pendingTransactions} />
     </Page>
   );
 };
