@@ -9,6 +9,7 @@ import {
   addDoc,
   getDoc,
   serverTimestamp,
+  collectionGroup,
 } from "firebase/firestore";
 import { getFunctions, httpsCallable } from "firebase/functions";
 import {
@@ -61,8 +62,8 @@ export const auth = getAuth(app);
 export const storage = getStorage(app);
 export const functions = getFunctions(app);
 
-export const colRef = (_colPath) => {
-  return collection(db, _colPath);
+export const colRef = (_colPath, isGroup = false) => {
+  return isGroup ? collectionGroup(db, _colPath) : collection(db, _colPath);
 };
 
 export const checkExistingEmail = async (email) => {

@@ -122,10 +122,7 @@ const AdminsList = ({ admins, roles }) => {
     <div className="_dashboard--admins">
       <InviteDialog open={open} onClose={onClose} roles={rolesList} />
       <div className="_dashboard-section">
-        <h3>List des Administrateur</h3>
-        <Button variant="contained" onClick={() => setOpen(true)}>
-          Invitez un Administrateur
-        </Button>
+        <h3>List des retrait en entente</h3>
       </div>
       <MUIDataTable columns={columns} data={admins} options={options} />
     </div>
