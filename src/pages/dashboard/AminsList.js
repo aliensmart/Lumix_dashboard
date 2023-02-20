@@ -1,4 +1,5 @@
 import { Button } from "@mui/material";
+import { updateDoc } from "firebase/firestore";
 import MUIDataTable from "mui-datatables";
 import React, { useMemo, useState } from "react";
 import { TABLE_TRANSLATE } from "../../utils/constants";
@@ -9,9 +10,9 @@ const AdminsList = ({ admins }) => {
 
   const roles = [
     { label: "En attente", value: "Pending" },
-    { label: "En cours", value: "In Progress" },
-    { label: "Terminé", value: "Completed" },
-    { label: "Annulé", value: "Cancelled" },
+    { label: "Complet", value: "In Progress" },
+    // { label: "Terminé", value: "Completed" },
+    // { label: "Annulé", value: "Cancelled" },
   ];
   const columns = [
     {
@@ -102,12 +103,22 @@ const AdminsList = ({ admins }) => {
         }),
         customBodyRender: (value, tableMeta, updateValue) => {
           const role = roles?.find((role) => role?.value === value);
+          // console.log(value);
+          // console.log(tableMeta);
+          // console.log(updateValue);
+          const transferRef = admins.find(
+            (data) => data.id === tableMeta.rowData[0]
+          )?.ref;
+          console.log(transferRef);
           return (
             <select
               value={role?.value}
               onChange={(e) => {
                 e.stopPropagation();
                 updateValue(e.target.value);
+                updateDoc(transferRef, {
+                  status: e.target.value,
+                });
               }}
             >
               <option value={role?.value}>{role?.label}</option>
