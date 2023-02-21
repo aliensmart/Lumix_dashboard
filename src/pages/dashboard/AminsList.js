@@ -109,7 +109,7 @@ const AdminsList = ({ admins }) => {
           const transferRef = admins.find(
             (data) => data.id === tableMeta.rowData[0]
           )?.ref;
-          console.log(transferRef);
+          // console.log(transferRef);
           return (
             <select
               value={role?.value}

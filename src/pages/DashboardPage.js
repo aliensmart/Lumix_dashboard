@@ -65,7 +65,7 @@ const DashboardPage = () => {
     };
   }, []);
 
-  console.log("pendingTransactions", pendingTransactions);
+  // console.log("pendingTransactions", pendingTransactions);
 
   const { data: adminData } = useAdminCheckerQuery();
 
