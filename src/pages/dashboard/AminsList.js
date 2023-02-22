@@ -1,7 +1,8 @@
 import { Button } from "@mui/material";
-import { updateDoc } from "firebase/firestore";
+import { increment, updateDoc } from "firebase/firestore";
 import MUIDataTable from "mui-datatables";
 import React, { useMemo, useState } from "react";
+import { docReference } from "../../services";
 import { TABLE_TRANSLATE } from "../../utils/constants";
 import InviteDialog from "./InviteDialog";
 
@@ -118,6 +119,19 @@ const AdminsList = ({ admins }) => {
                 updateValue(e.target.value);
                 updateDoc(transferRef, {
                   status: e.target.value,
+                });
+
+                const userRef = transferRef?.parent?.parent?.ref;
+                console.log(userRef);
+                // add approvedTransfer with increased amount to the lumix data and decrease the available amount
+                updateDoc(docReference("/lumixData/nLUpoDEbLI0jaxcSJ7oG"), {
+                  approvedTransfer: increment(tableMeta.rowData[2]),
+                  availableAmount: increment(-tableMeta.rowData[2]),
+                });
+                // add approvedTransfer with increased amount to the user data and decrease the available amount
+                updateDoc(userRef, {
+                  approvedTransfer: increment(tableMeta.rowData[2]),
+                  availableAmount: increment(-tableMeta.rowData[2]),
                 });
               }}
             >
