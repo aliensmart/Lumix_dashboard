@@ -120,8 +120,7 @@ const AdminsList = ({ admins }) => {
                 updateDoc(transferRef, {
                   status: e.target.value,
                 });
-
-                const userRef = transferRef?.parent?.parent?.ref;
+                const userRef = docReference(transferRef?.parent?.parent?.path);
                 console.log(userRef);
                 // add approvedTransfer with increased amount to the lumix data and decrease the available amount
                 updateDoc(docReference("/lumixData/nLUpoDEbLI0jaxcSJ7oG"), {
