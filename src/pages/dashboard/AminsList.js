@@ -11,7 +11,7 @@ const AdminsList = ({ admins }) => {
 
   const roles = [
     { label: "En attente", value: "Pending" },
-    { label: "Complet", value: "In Progress" },
+    { label: "Complet", value: "Completed" },
     // { label: "Terminé", value: "Completed" },
     // { label: "Annulé", value: "Cancelled" },
   ];
@@ -104,13 +104,9 @@ const AdminsList = ({ admins }) => {
         }),
         customBodyRender: (value, tableMeta, updateValue) => {
           const role = roles?.find((role) => role?.value === value);
-          // console.log(value);
-          // console.log(tableMeta);
-          // console.log(updateValue);
           const transferRef = admins.find(
             (data) => data.id === tableMeta.rowData[0]
           )?.ref;
-          // console.log(transferRef);
           return (
             <select
               value={role?.value}
@@ -121,7 +117,6 @@ const AdminsList = ({ admins }) => {
                   status: e.target.value,
                 });
                 const userRef = docReference(transferRef?.parent?.parent?.path);
-                console.log(userRef);
                 // add approvedTransfer with increased amount to the lumix data and decrease the available amount
                 updateDoc(docReference("/lumixData/nLUpoDEbLI0jaxcSJ7oG"), {
                   approvedTransfer: increment(tableMeta.rowData[2]),
@@ -150,14 +145,6 @@ const AdminsList = ({ admins }) => {
     filterType: "dropdown",
     responsive: "standard",
     selectableRows: "single",
-    //   onRowClick: handleRowClicked,
-    //   setCellProps: () => ({
-    //     style: { minWidth: "15rem", padding: "16px 26px", textAlign: "left" },
-    //   }),
-    //   onRowSelectionChange: handleRowSelectionChange,
-    //   customToolbarSelect: ({ displayData }) => (
-    //     <CustomToolbarOption displayData={displayData} userId={selectedDevId} />
-    //   ),
     ...TABLE_TRANSLATE,
   };
   const onClose = () => {
