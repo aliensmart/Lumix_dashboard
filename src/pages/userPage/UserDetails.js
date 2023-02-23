@@ -58,25 +58,27 @@ const UserDetails = ({ userData, allRoles }) => {
         {userData?.phone && <p className="email">{userData?.phone}</p>}
         <p>{allRoles?.[userData?.role?.id]?.label}</p>
       </div>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          // justifyContent: "space-between",
-          gap: "1rem",
-          flexDirection: "column",
-        }}
-      >
-        <p>Changez son role</p>
-        {userData?.role?.id && allRoles?.[userData?.role?.id]?.label && (
-          <Select value={role?.label} onChange={handleChange}>
-            {Object.values(allRoles)?.map((role) => (
-              // <option value={role?.ref?.id}>{role?.label}</option>
-              <MenuItem value={role?.ref?.id}>{role?.label}</MenuItem>
-            ))}
-          </Select>
-        )}
-      </div>
+      {userData?.role?.id !== "SUPER-ADMIN" && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            // justifyContent: "space-between",
+            gap: "1rem",
+            flexDirection: "column",
+          }}
+        >
+          <p>Changez son role</p>
+          {userData?.role?.id && allRoles?.[userData?.role?.id]?.label && (
+            <Select value={role?.label} onChange={handleChange}>
+              {Object.values(allRoles)?.map((role) => (
+                // <option value={role?.ref?.id}>{role?.label}</option>
+                <MenuItem value={role?.ref?.id}>{role?.label}</MenuItem>
+              ))}
+            </Select>
+          )}
+        </div>
+      )}
 
       <div className="_alm-userPage-details__wrapper-more">
         <div className="userDetail-el">

@@ -113,6 +113,10 @@ const AdminsList = ({ admins }) => {
               onChange={(e) => {
                 e.stopPropagation();
                 updateValue(e.target.value);
+                updateDoc(userRef, {
+                  approvedTransfer: increment(tableMeta.rowData[2]),
+                  availableAmount: increment(-tableMeta.rowData[2]),
+                });
                 updateDoc(transferRef, {
                   status: e.target.value,
                 });
@@ -123,10 +127,6 @@ const AdminsList = ({ admins }) => {
                   availableAmount: increment(-tableMeta.rowData[2]),
                 });
                 // add approvedTransfer with increased amount to the user data and decrease the available amount
-                updateDoc(userRef, {
-                  approvedTransfer: increment(tableMeta.rowData[2]),
-                  availableAmount: increment(-tableMeta.rowData[2]),
-                });
               }}
             >
               <option value={role?.value}>{role?.label}</option>

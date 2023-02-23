@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import React from "react";
 import FinacialCard from "./FinacialCard";
 
-const FinanceSection = () => {
+const FinanceSection = ({ data }) => {
   return (
     <div className="_dashboard--financial">
       <div className="_dashboard-section">
@@ -12,17 +12,26 @@ const FinanceSection = () => {
         <Grid item>
           <FinacialCard
             title={"Montant Disponible"}
-            content={"400000 francs"}
+            content={`${data?.availableAmount ?? 0} francs`}
           />
         </Grid>
         <Grid item>
           <FinacialCard
             title={"Transfere Approuver"}
-            content={"30.000 francs"}
+            content={`${data?.approvedTransfer ?? 0} francs`}
           />
         </Grid>
         <Grid item>
-          <FinacialCard title={"Total deposer"} content={"500.000 francs"} />
+          <FinacialCard
+            title={"Total des depots"}
+            content={`${data?.allDeposit ?? 0} francs`}
+          />
+        </Grid>
+        <Grid item>
+          <FinacialCard
+            title={"Total des Jeux"}
+            content={`${data?.totalGamed ?? 0} francs`}
+          />
         </Grid>
       </Grid>
     </div>

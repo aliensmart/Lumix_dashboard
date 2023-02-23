@@ -4,7 +4,13 @@ import React, { useEffect } from "react";
 import { useCurrentAdmin } from "../hooks/useCurrentAdmin";
 
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { addOrUpdate, colRef, docRef, storage } from "../services";
+import {
+  addOrUpdate,
+  colRef,
+  docRef,
+  docReference,
+  storage,
+} from "../services";
 // import FinacialCard from "./dashboard/FinacialCard";
 import { useRolesQUery } from "../hooks/useRolesData";
 import FinanceSection from "./dashboard/FinanceSection";
@@ -22,17 +28,8 @@ import { getDoc, onSnapshot, orderBy, query, where } from "firebase/firestore";
 // );
 
 const DashboardPage = () => {
-  // componentDidMount() {
-  //   // this is needed, because InfiniteCalendar forces window scroll
-  //   window.scrollTo(0, 0);
-  // }
-
-  // useEffect(() => {
-  //   // this is needed, because InfiniteCalendar forces window scroll
-  //   window.scrollTo(0, 0);
-  // }, []);
-
   const [pendingTransactions, setPendingTransactions] = React.useState([]);
+  const [lumixData, setLumixData] = React.useState(null);
 
   useEffect(() => {
     const q = query(
@@ -60,8 +57,18 @@ const DashboardPage = () => {
 
       setPendingTransactions(data);
     });
+
+    const subLumixData = onSnapshot(
+      docReference("/lumixData/nLUpoDEbLI0jaxcSJ7oG"),
+      (doc) => {
+        console.log("doc", doc.data());
+        setLumixData({ ...doc.data(), ref: doc.ref });
+      }
+    );
+
     return () => {
       subPending();
+      subLumixData();
     };
   }, []);
 
@@ -73,10 +80,17 @@ const DashboardPage = () => {
 
   const { data: roles } = useRolesQUery();
 
+  console.log("roles", roles);
+  console.log("data", data);
+
   return (
     <Page className="_dashboard">
       <AdminData roles={roles} data={data} />
-      <FinanceSection />
+      {data?.role?.id === "ADMIN" ||
+        (data?.role?.id === "SUPER-ADMIN" && (
+          <FinanceSection data={lumixData} />
+        ))}
+
       <AdminsList admins={pendingTransactions} />
     </Page>
   );

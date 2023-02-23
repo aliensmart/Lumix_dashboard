@@ -11,7 +11,15 @@ const UserTransactions = ({ value, index, transactions }) => {
         >
           {transactions?.length > 0 ? (
             transactions?.map((trans, i) => {
-              return <SingleTransaction transaction={trans} key={trans?.id} />;
+              if (
+                (trans?.type === "Deposit" && trans?.verified) ||
+                (trans?.type === "Withdraw" &&
+                  (trans?.status === "Completed" ||
+                    trans?.status === "In Progress"))
+              )
+                return (
+                  <SingleTransaction transaction={trans} key={trans?.id} />
+                );
             })
           ) : (
             <p>Pas de transaction</p>
