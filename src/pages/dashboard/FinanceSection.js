@@ -17,7 +17,7 @@ const FinanceSection = ({ data }) => {
         </Grid>
         <Grid item>
           <FinacialCard
-            title={"Transfere Approuver"}
+            title={"Transfert Approuver"}
             content={`${data?.approvedTransfer ?? 0} francs`}
           />
         </Grid>

@@ -27,7 +27,7 @@ const AdminsList = ({ admins }) => {
     },
     {
       name: "fullName",
-      label: "Nom Complete",
+      label: "Nom Complet",
       options: {
         filter: true,
         sort: true,
@@ -153,7 +153,7 @@ const AdminsList = ({ admins }) => {
   return (
     <div className="_dashboard--admins">
       <div className="_dashboard-section">
-        <h3>List des retrait en entente</h3>
+        <h3>Liste des retraits en attente</h3>
       </div>
       <MUIDataTable columns={columns} data={admins} options={options} />
     </div>

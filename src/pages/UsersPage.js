@@ -23,7 +23,7 @@ const UsersPage = () => {
     },
     {
       name: "fullName",
-      label: "Nom Complete",
+      label: "Nom Complet",
       options: {
         filter: true,
         sort: true,
@@ -53,7 +53,7 @@ const UsersPage = () => {
     },
 
     {
-      name: "phoneNumber",
+      name: "phone",
       label: "NUMERO DE TELEPHONE",
       options: {
         filter: true,
@@ -137,7 +137,7 @@ const UsersPage = () => {
 
             <CardBody>
               <MUIDataTable
-                title={"List des Utilisateurs"}
+                title={"Liste des Utilisateurs"}
                 data={data}
                 columns={columns}
                 options={options}

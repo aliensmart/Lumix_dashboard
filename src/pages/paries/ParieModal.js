@@ -67,7 +67,7 @@ function ParieModal({ open, title, setOpen }) {
     random = Math.random().toString(36).substring(2, 15);
     reset({
       ...BET,
-      betName: `parie_${random}`,
+      betName: `pari-${random}`,
       addedOn: currentTime(),
     });
   };
@@ -100,8 +100,8 @@ function ParieModal({ open, title, setOpen }) {
           >
             <Grid item lg={6} md={6} sm={12}>
               <LmInputLabel
-                label={"Nom du Parie"}
-                desc={"Entrez le nom de votre parie"}
+                label={"Nom du Pari"}
+                desc={"Entrez le nom de votre pari"}
                 labelName="betName"
                 errors={errors}
                 isValid={touchedFields}
@@ -145,7 +145,7 @@ function ParieModal({ open, title, setOpen }) {
                   fontSize: "14px",
                 }}
               >
-                La date choisir sera toujour entre 8:30 et 18:30
+                La date choisit sera toujours entre 8h 30 et 18h 30
               </p>
               <LocalizationProvider
                 dateAdapter={AdapterDateFns}
@@ -153,7 +153,7 @@ function ParieModal({ open, title, setOpen }) {
               >
                 <DatePicker
                   views={["day", "month", "year"]}
-                  label="Choisir le Jour de Votre Parie"
+                  label="Choisir le jour du pari"
                   value={value}
                   onChange={(newValue) => {
                     setValue(newValue);

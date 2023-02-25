@@ -16,9 +16,9 @@ const sidebarBackground = {
 };
 
 const navItems = [
-  { to: "/", name: "dashboard", exact: true, Icon: MdDashboard },
+  { to: "/", name: "Accueil", exact: true, Icon: MdDashboard },
   { to: "/users", name: "Utilisateurs", exact: false, Icon: MdPortrait },
-  { to: "/paries", name: "Paries", exact: false, Icon: MdMonetizationOn },
+  { to: "/paries", name: "Paris", exact: false, Icon: MdMonetizationOn },
 ];
 
 const bem = bn.create("sidebar");

@@ -18,6 +18,7 @@ const Paries = () => {
   const [open, setOpen] = useState(false);
   const [selectedParie, setSelectedParie] = useState({});
   const [played, setPlayed] = useState(false);
+  const [beters, setBeters] = useState(0);
   const [parieId, setParieId] = useState("");
   const [isPlay, setIsPlay] = useState(false);
   const { data } = useBetsQuery();
@@ -35,7 +36,7 @@ const Paries = () => {
   const columns = [
     {
       name: "id",
-      label: "Parie Id",
+      label: "Pari  Id",
       options: {
         filter: true,
         sort: true,
@@ -44,7 +45,7 @@ const Paries = () => {
     },
     {
       name: "betName",
-      label: "Parie",
+      label: "Pari",
       options: {
         filter: true,
         sort: true,
@@ -93,7 +94,7 @@ const Paries = () => {
     },
     {
       name: "winnersNumber",
-      label: "Nombre de Personne a Gagne",
+      label: "Nombre de Pari Gagnant",
       options: {
         filter: true,
         sort: true,
@@ -109,7 +110,7 @@ const Paries = () => {
     },
     {
       name: "betsCount",
-      label: "Nombre de Paries",
+      label: "Nombre de Paris",
       options: {
         filter: true,
         sort: true,
@@ -125,7 +126,7 @@ const Paries = () => {
     },
     {
       name: "beters",
-      label: "Nombre de Joueur",
+      label: "Nombre de Joueurs",
       options: {
         filter: true,
         sort: true,
@@ -177,8 +178,11 @@ const Paries = () => {
       // setSelectedDevId(userId);
       setPlayed(parie?.played);
       setParieId(parie?.id);
+      setBeters(parie?.beters);
     } else {
       setParieId("");
+      setSelectedParie({});
+      setBeters(0);
     }
   };
 
@@ -201,6 +205,7 @@ const Paries = () => {
         setPlayed={setPlayed}
         parieId={parieId}
         setIsPlay={setIsPlay}
+        beters={beters}
       />
     ),
 
@@ -220,7 +225,7 @@ const Paries = () => {
         >
           <Grid item>
             {" "}
-            <h3>List des Paries</h3>
+            <h3>Liste des paris</h3>
           </Grid>
           <Grid item>
             {" "}
@@ -230,7 +235,7 @@ const Paries = () => {
                 size="medium"
                 onClick={() => setOpen(true)}
               >
-                Creez un Parie
+                Creez un Pari
               </Button>
             ) : notAllow && isPlaying ? (
               <p>Jeux en Cours</p>
@@ -238,7 +243,7 @@ const Paries = () => {
               notAllow &&
               !isPlaying && (
                 <p style={{ color: "red" }}>
-                  Lancer le Jeux en clickant sur le parie non jouer
+                  Lancez le Jeux en clickant sur le pari non jouer
                 </p>
               )
             )}
@@ -246,7 +251,7 @@ const Paries = () => {
         </Grid>
 
         <MUIDataTable
-          title={"List des Paries creer"}
+          title={"Liste des paris crée"}
           data={data}
           columns={columns}
           options={options}
