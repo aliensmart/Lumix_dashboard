@@ -41,7 +41,7 @@ function ParieModal({ open, title, setOpen }) {
   } = useForm({
     defaultValues: {
       ...BET,
-      betName: `parie_${random}`,
+      betName: `pari-${random}`,
       addedOn: currentTime(),
     },
   });
@@ -89,7 +89,7 @@ function ParieModal({ open, title, setOpen }) {
       aria-describedby="alert-dialog-slide-description"
       maxWidth={"lg"}
     >
-      <DialogTitle>Creez une Parie</DialogTitle>
+      <DialogTitle>Creez un Pari</DialogTitle>
       <DialogContent>
         <Stack spacing={3}>
           <Grid
