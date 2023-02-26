@@ -10,7 +10,7 @@ import { deleteDoc } from "firebase/firestore";
 import React from "react";
 import { addOrUpdate, docRef } from "../../services";
 
-const CustomToolbar = ({ played, parieId, setPlayed }) => {
+const CustomToolbar = ({ played, parieId, setIsPlay, beters }) => {
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -36,7 +36,7 @@ const CustomToolbar = ({ played, parieId, setPlayed }) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Voulez vous vraiment supprimer ce Parie?
+            Voulez vous vraiment supprimer ce Pari?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -46,9 +46,11 @@ const CustomToolbar = ({ played, parieId, setPlayed }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      {!played && <Button onClick={onPlay}>Jouer</Button>}
+      {!played && <Button onClick={() => setIsPlay(true)}>Jouer</Button>}
 
-      <Button onClick={handleClickOpen}>Supprimer</Button>
+      {!played && beters.length <= 0 && (
+        <Button onClick={handleClickOpen}>Supprimer</Button>
+      )}
     </div>
   );
 };

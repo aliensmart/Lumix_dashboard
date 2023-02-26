@@ -30,25 +30,6 @@ const AdminData = ({ data, handleUpload, roles }) => {
             />
           )}
         </Grid>
-        <Grid item>
-          {" "}
-          <input
-            type={"file"}
-            hidden
-            id="admin_imUp"
-            onChange={handleUpload}
-            accept="image/png, image/jpeg, image/jpg"
-            multiple={false}
-          />
-          <Button
-            variant="contained"
-            onClick={() => {
-              document.querySelector("#admin_imUp").click();
-            }}
-          >
-            {data?.profile ? "Changez de" : "Ajoutez une"} photo
-          </Button>
-        </Grid>
       </Grid>
       <Grid
         item
@@ -82,7 +63,7 @@ const AdminData = ({ data, handleUpload, roles }) => {
         <Grid item>
           <p>
             <strong>Numero de Tel: </strong>
-            {data?.phoneNumber}
+            {data?.phone}
           </p>
         </Grid>
         <Grid item>
@@ -94,7 +75,7 @@ const AdminData = ({ data, handleUpload, roles }) => {
         <Grid item>
           <p>
             <strong>Pays: </strong>
-            {data?.country}
+            {data?.countryData?.name?.common}
           </p>
         </Grid>
       </Grid>

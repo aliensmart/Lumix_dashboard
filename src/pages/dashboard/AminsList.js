@@ -1,18 +1,20 @@
 import { Button } from "@mui/material";
+import { increment, updateDoc } from "firebase/firestore";
 import MUIDataTable from "mui-datatables";
 import React, { useMemo, useState } from "react";
+import { docReference } from "../../services";
 import { TABLE_TRANSLATE } from "../../utils/constants";
 import InviteDialog from "./InviteDialog";
 
-const AdminsList = ({ admins, roles }) => {
-  console.log(Object.values(roles));
+const AdminsList = ({ admins }) => {
   const [open, setOpen] = useState(false);
-  const rolesList = useMemo(() => {
-    if (roles?.length <= 0) return;
-    return roles?.map((role) => {
-      return { value: role?.status, ref: role?.ref, label: role?.status };
-    });
-  }, [roles?.length]);
+
+  const roles = [
+    { label: "En attente", value: "Pending" },
+    { label: "Complet", value: "Completed" },
+    // { label: "Terminé", value: "Completed" },
+    // { label: "Annulé", value: "Cancelled" },
+  ];
   const columns = [
     {
       name: "id",
@@ -25,7 +27,7 @@ const AdminsList = ({ admins, roles }) => {
     },
     {
       name: "fullName",
-      label: "Nom Complete",
+      label: "Nom Complet",
       options: {
         filter: true,
         sort: true,
@@ -40,13 +42,14 @@ const AdminsList = ({ admins, roles }) => {
       },
     },
     {
-      name: "city",
-      label: "Ville",
+      name: "amount",
+      label: "Montant(XOF)",
       options: {
         filter: true,
         sort: true,
         setCellProps: () => ({
           style: {
+            // minWidth: "15rem",
             padding: "16px 26px",
             textAlign: "left",
             whiteSpace: "nowrap",
@@ -70,7 +73,7 @@ const AdminsList = ({ admins, roles }) => {
     },
 
     {
-      name: "phoneNumber",
+      name: "phone",
       label: "NUMERO DE TELEPHONE",
       options: {
         filter: true,
@@ -86,7 +89,7 @@ const AdminsList = ({ admins, roles }) => {
       },
     },
     {
-      name: "role",
+      name: "status",
       label: "ROLE",
       options: {
         filter: true,
@@ -99,6 +102,42 @@ const AdminsList = ({ admins, roles }) => {
             whiteSpace: "nowrap",
           },
         }),
+        customBodyRender: (value, tableMeta, updateValue) => {
+          const role = roles?.find((role) => role?.value === value);
+          const transferRef = admins.find(
+            (data) => data.id === tableMeta.rowData[0]
+          )?.ref;
+          return (
+            <select
+              value={role?.value}
+              onChange={(e) => {
+                e.stopPropagation();
+                updateValue(e.target.value);
+                updateDoc(userRef, {
+                  approvedTransfer: increment(tableMeta.rowData[2]),
+                  availableAmount: increment(-tableMeta.rowData[2]),
+                });
+                updateDoc(transferRef, {
+                  status: e.target.value,
+                });
+                const userRef = docReference(transferRef?.parent?.parent?.path);
+                // add approvedTransfer with increased amount to the lumix data and decrease the available amount
+                updateDoc(docReference("/lumixData/nLUpoDEbLI0jaxcSJ7oG"), {
+                  approvedTransfer: increment(tableMeta.rowData[2]),
+                  availableAmount: increment(-tableMeta.rowData[2]),
+                });
+                // add approvedTransfer with increased amount to the user data and decrease the available amount
+              }}
+            >
+              <option value={role?.value}>{role?.label}</option>
+              {roles
+                ?.filter((el) => el.value !== role.value)
+                ?.map((role) => {
+                  return <option value={role?.value}>{role?.label}</option>;
+                })}
+            </select>
+          );
+        },
       },
     },
   ];
@@ -106,14 +145,6 @@ const AdminsList = ({ admins, roles }) => {
     filterType: "dropdown",
     responsive: "standard",
     selectableRows: "single",
-    //   onRowClick: handleRowClicked,
-    //   setCellProps: () => ({
-    //     style: { minWidth: "15rem", padding: "16px 26px", textAlign: "left" },
-    //   }),
-    //   onRowSelectionChange: handleRowSelectionChange,
-    //   customToolbarSelect: ({ displayData }) => (
-    //     <CustomToolbarOption displayData={displayData} userId={selectedDevId} />
-    //   ),
     ...TABLE_TRANSLATE,
   };
   const onClose = () => {
@@ -121,12 +152,8 @@ const AdminsList = ({ admins, roles }) => {
   };
   return (
     <div className="_dashboard--admins">
-      <InviteDialog open={open} onClose={onClose} roles={rolesList} />
       <div className="_dashboard-section">
-        <h3>List des Administrateur</h3>
-        <Button variant="contained" onClick={() => setOpen(true)}>
-          Invitez un Administrateur
-        </Button>
+        <h3>Liste des retraits en attente</h3>
       </div>
       <MUIDataTable columns={columns} data={admins} options={options} />
     </div>

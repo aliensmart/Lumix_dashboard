@@ -21,6 +21,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
 import { addDocument, colRef, currentTime } from "../../services";
 import { Timestamp } from "firebase/firestore";
+import { BET } from "../../utils/AllDefaultData";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -31,7 +32,7 @@ function ParieModal({ open, title, setOpen }) {
 
   const [loading, setLoading] = useState(false);
   let random = Math.random().toString(36).substring(2, 15);
-  console.log(random);
+
   const {
     register,
     formState: { errors, touchedFields },
@@ -39,9 +40,9 @@ function ParieModal({ open, title, setOpen }) {
     handleSubmit,
   } = useForm({
     defaultValues: {
-      betName: `parie_${random}`,
-      minBet: "500",
-      winnersNumber: "20",
+      ...BET,
+      betName: `pari-${random}`,
+      addedOn: currentTime(),
     },
   });
 
@@ -54,16 +55,10 @@ function ParieModal({ open, title, setOpen }) {
     const endOn = value.setUTCHours(18, 30, 0);
     // Timestamp.
     const betData = {
-      betName: data?.betName,
-      minBet: parseInt(data?.minBet),
-      winnersNumber: parseInt(data?.winnersNumber),
+      ...data,
       startsOn: new Date(startOn),
       endsOn: new Date(endOn),
-      status: "ONGOING",
-      played: false,
-      beters: 0,
       addedOn: currentTime(),
-      totalBet: 0,
     };
 
     await addDocument("bets", betData);
@@ -71,17 +66,17 @@ function ParieModal({ open, title, setOpen }) {
     setLoading(false);
     random = Math.random().toString(36).substring(2, 15);
     reset({
-      betName: `parie_${random}`,
-      minBet: "500",
-      winnersNumber: "20",
+      ...BET,
+      betName: `pari-${random}`,
+      addedOn: currentTime(),
     });
   };
   const handleClose = () => {
     // random = Math.random().toString(36).substring(2, 15);
     reset({
+      ...BET,
       betName: `parie_${random}`,
-      minBet: "500",
-      winnersNumber: "20",
+      addedOn: currentTime(),
     });
     setOpen(false);
   };
@@ -94,7 +89,7 @@ function ParieModal({ open, title, setOpen }) {
       aria-describedby="alert-dialog-slide-description"
       maxWidth={"lg"}
     >
-      <DialogTitle>Creez une Parie</DialogTitle>
+      <DialogTitle>Creez un Pari</DialogTitle>
       <DialogContent>
         <Stack spacing={3}>
           <Grid
@@ -105,8 +100,8 @@ function ParieModal({ open, title, setOpen }) {
           >
             <Grid item lg={6} md={6} sm={12}>
               <LmInputLabel
-                label={"Nom du Parie"}
-                desc={"Entrez le nom de votre parie"}
+                label={"Nom du Pari"}
+                desc={"Entrez le nom de votre pari"}
                 labelName="betName"
                 errors={errors}
                 isValid={touchedFields}
@@ -114,7 +109,7 @@ function ParieModal({ open, title, setOpen }) {
                 // registerObj={{ maxLength: 20, minLength: 3 }}
               />
             </Grid>
-            <Grid item lg={6} md={6} sm={12}>
+            {/* <Grid item lg={6} md={6} sm={12}>
               <LmInputLabel
                 label={"Parie Minimum en francs Cfa"}
                 desc={"Entrez le montant minimum de ce parie"}
@@ -125,8 +120,8 @@ function ParieModal({ open, title, setOpen }) {
                 registerObj={{ required: true, min: 100 }}
                 type="number"
               />
-            </Grid>
-            <Grid item lg={6} md={6} sm={12}>
+            </Grid> */}
+            {/* <Grid item lg={6} md={6} sm={12}>
               <LmInputLabel
                 label={"Nombre de Gagnant"}
                 desc={"Entrez le nombre de gagnant de votre parie"}
@@ -137,7 +132,7 @@ function ParieModal({ open, title, setOpen }) {
                 registerObj={{ required: true, min: 1 }}
                 type="number"
               />
-            </Grid>
+            </Grid> */}
             <Grid item lg={6} md={6} sm={12}>
               <h3 style={{ fontSize: "18px", fontWeight: 600, margin: 0 }}>
                 Choisir la date
@@ -150,7 +145,7 @@ function ParieModal({ open, title, setOpen }) {
                   fontSize: "14px",
                 }}
               >
-                La date choisir sera toujour entre 8:30 et 18:30
+                La date choisit sera toujours entre 8h 30 et 18h 30
               </p>
               <LocalizationProvider
                 dateAdapter={AdapterDateFns}
@@ -158,7 +153,7 @@ function ParieModal({ open, title, setOpen }) {
               >
                 <DatePicker
                   views={["day", "month", "year"]}
-                  label="Choisir le Jour de Votre Parie"
+                  label="Choisir le jour du pari"
                   value={value}
                   onChange={(newValue) => {
                     setValue(newValue);

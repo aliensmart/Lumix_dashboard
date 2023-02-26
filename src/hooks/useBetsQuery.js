@@ -17,7 +17,7 @@ export const useBetsQuery = (onSuccess, onError) => {
       select: (doc) => {
         if (doc.docs.length >= 1) {
           let data = doc?.docs?.map((dataDoc) => {
-            return { ...dataDoc?.data(), id: dataDoc?.id };
+            return { ...dataDoc?.data(), id: dataDoc?.id, ref: dataDoc.ref };
           });
           return data;
         }

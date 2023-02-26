@@ -6,6 +6,9 @@ import ParieModal from "./paries/ParieModal";
 import { useBetsQuery } from "../hooks/useBetsQuery";
 import { TABLE_TRANSLATE } from "../utils/constants";
 import CustomToolbar from "./paries/CustomToolbar";
+import PlayModal from "./paries/PlayModal";
+import { renderDate } from "../utils/helpers";
+import SelectedBetUsers from "./paries/SelectedBetUsers";
 
 /**
  * This will be the file where Admins can create new challenges
@@ -15,7 +18,9 @@ const Paries = () => {
   const [open, setOpen] = useState(false);
   const [selectedParie, setSelectedParie] = useState({});
   const [played, setPlayed] = useState(false);
+  const [beters, setBeters] = useState(0);
   const [parieId, setParieId] = useState("");
+  const [isPlay, setIsPlay] = useState(false);
   const { data } = useBetsQuery();
 
   const notAllow = useMemo(() => {
@@ -31,7 +36,7 @@ const Paries = () => {
   const columns = [
     {
       name: "id",
-      label: "Parie Id",
+      label: "Pari  Id",
       options: {
         filter: true,
         sort: true,
@@ -40,7 +45,7 @@ const Paries = () => {
     },
     {
       name: "betName",
-      label: "Parie",
+      label: "Pari",
       options: {
         filter: true,
         sort: true,
@@ -59,7 +64,7 @@ const Paries = () => {
       label: "Jouer",
       options: {
         filter: true,
-        sort: false,
+        sort: true,
         customBodyRender: (val) => {
           let myStyle = {
             margin: 0,
@@ -72,11 +77,11 @@ const Paries = () => {
     },
 
     {
-      name: "minBet",
-      label: "Prix Minimum de Parie",
+      name: "totalBet",
+      label: "Montant total Jouer(Francs CFA)",
       options: {
         filter: true,
-        sort: false,
+        sort: true,
         setCellProps: () => ({
           style: {
             minWidth: "15rem",
@@ -89,10 +94,26 @@ const Paries = () => {
     },
     {
       name: "winnersNumber",
-      label: "Nombre de Personne a Gagne",
+      label: "Nombre de Pari Gagnant",
       options: {
         filter: true,
-        sort: false,
+        sort: true,
+        setCellProps: () => ({
+          style: {
+            minWidth: "15rem",
+            padding: "16px 26px",
+            textAlign: "left",
+            whiteSpace: "nowrap",
+          },
+        }),
+      },
+    },
+    {
+      name: "betsCount",
+      label: "Nombre de Paris",
+      options: {
+        filter: true,
+        sort: true,
         setCellProps: () => ({
           style: {
             minWidth: "15rem",
@@ -105,7 +126,7 @@ const Paries = () => {
     },
     {
       name: "beters",
-      label: "Nombre de Joueur",
+      label: "Nombre de Joueurs",
       options: {
         filter: true,
         sort: true,
@@ -120,7 +141,7 @@ const Paries = () => {
       },
     },
     {
-      name: "betDay",
+      name: "endsOn",
       label: "Jour de Jeux",
       options: {
         filter: true,
@@ -133,6 +154,9 @@ const Paries = () => {
             whiteSpace: "nowrap",
           },
         }),
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return renderDate(value.toDate());
+        },
       },
     },
   ];
@@ -147,17 +171,29 @@ const Paries = () => {
     allRowsSelected,
     rowsSelected
   ) => {
-    const parie = data[currentRowsSelected?.[0]?.dataIndex];
-    // setSelectedDevId(userId);
-    setPlayed(parie?.played);
-    setParieId(parie?.id);
+    // setSelectedParie(parie);
+    // console.log(rowsSelected);
+    if (rowsSelected.length > 0) {
+      const parie = data[currentRowsSelected?.[0]?.dataIndex];
+      // setSelectedDevId(userId);
+      setPlayed(parie?.played);
+      setParieId(parie?.id);
+      setBeters(parie?.beters);
+    } else {
+      setParieId("");
+      setSelectedParie({});
+      setBeters(0);
+    }
   };
 
   const options = {
     filterType: "dropdown",
     responsive: "standard",
     selectableRows: "single",
-    // onRowClick: handleRowClicked,
+    // onRowClick: (rowData, rowState) => {
+    //   console.log(rowData);
+    //   console.log(rowState);
+    // },
     // setCellProps: () => ({
     //   style: { minWidth: "15rem", padding: "16px 26px", textAlign: "left" },
     // }),
@@ -168,13 +204,18 @@ const Paries = () => {
         played={played}
         setPlayed={setPlayed}
         parieId={parieId}
+        setIsPlay={setIsPlay}
+        beters={beters}
       />
     ),
+
     ...TABLE_TRANSLATE,
   };
+
   return (
     <Page className={"_lmParies"}>
       <ParieModal open={open} setOpen={setOpen} title={"Ajoutez une parie"} />
+      <PlayModal open={isPlay} setOpen={setIsPlay} parieId={parieId} />
       <Stack className="_lmParies-container" spacing={3}>
         <Grid
           container
@@ -184,7 +225,7 @@ const Paries = () => {
         >
           <Grid item>
             {" "}
-            <h3>List des Paries</h3>
+            <h3>Liste des paris</h3>
           </Grid>
           <Grid item>
             {" "}
@@ -194,7 +235,7 @@ const Paries = () => {
                 size="medium"
                 onClick={() => setOpen(true)}
               >
-                Creez un Parie
+                Creez un Pari
               </Button>
             ) : notAllow && isPlaying ? (
               <p>Jeux en Cours</p>
@@ -202,7 +243,7 @@ const Paries = () => {
               notAllow &&
               !isPlaying && (
                 <p style={{ color: "red" }}>
-                  Lancer le Jeux en clickant sur le parie non jouer
+                  Lancez le Jeux en clickant sur le pari non jouer
                 </p>
               )
             )}
@@ -210,12 +251,13 @@ const Paries = () => {
         </Grid>
 
         <MUIDataTable
-          title={"List des Paries creer"}
+          title={"Liste des paris crée"}
           data={data}
           columns={columns}
           options={options}
         />
       </Stack>
+      {parieId && <SelectedBetUsers betId={parieId} />}
     </Page>
   );
 };

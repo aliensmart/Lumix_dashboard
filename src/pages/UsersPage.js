@@ -23,7 +23,7 @@ const UsersPage = () => {
     },
     {
       name: "fullName",
-      label: "Nom Complete",
+      label: "Nom Complet",
       options: {
         filter: true,
         sort: true,
@@ -53,7 +53,7 @@ const UsersPage = () => {
     },
 
     {
-      name: "phoneNumber",
+      name: "phone",
       label: "NUMERO DE TELEPHONE",
       options: {
         filter: true,
@@ -103,8 +103,8 @@ const UsersPage = () => {
   ];
 
   const handleRowClicked = (rowData, rowMeta) => {
-    console.log(rowData);
-    console.log(rowMeta);
+    // console.log(rowData);
+    // console.log(rowMeta);
   };
   const handleRowSelectionChange = (currentRowsSelected) => {
     const userId = data[currentRowsSelected?.[0]?.dataIndex]?.id;
@@ -137,7 +137,7 @@ const UsersPage = () => {
 
             <CardBody>
               <MUIDataTable
-                title={"List des Utilisateurs"}
+                title={"Liste des Utilisateurs"}
                 data={data}
                 columns={columns}
                 options={options}

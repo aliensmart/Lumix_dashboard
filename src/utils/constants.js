@@ -132,7 +132,7 @@ export const TABLE_TRANSLATE = {
   selectableRowsOnClick: true,
   textLabels: {
     body: {
-      noMatch: "Desole, pas de donne pour l'instant",
+      noMatch: "Désolé  pas de données   pour l’instant",
       toolTip: "Sort",
       columnHeaderTooltip: (column) => `Sort for ${column.label}`,
     },

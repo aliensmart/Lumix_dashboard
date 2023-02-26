@@ -202,10 +202,10 @@ export const ArrowDownIcon = ({
 
 export const ArrowUpIcon = ({ width = 13, height = 14, color = "#010C17" }) => {
   return (
-    <svg width={width} height={height} viewBox="0 0 13 14" fill="none">
+    <svg width={width} height={height} viewBox="0 0 13 14" fill={color}>
       <path
         d="M11 4.40997L2.393 13.017L0.979 11.603L9.586 2.99597L2 2.99597V0.995968L13 0.995968L13 11.996H11L11 4.41097V4.40997Z"
-        fill={color}
+        fill="#010C17"
       />
     </svg>
   );

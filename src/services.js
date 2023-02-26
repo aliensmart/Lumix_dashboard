@@ -9,6 +9,7 @@ import {
   addDoc,
   getDoc,
   serverTimestamp,
+  collectionGroup,
 } from "firebase/firestore";
 import { getFunctions, httpsCallable } from "firebase/functions";
 import {
@@ -42,6 +43,17 @@ export const firebaseConfig = {
   measurementId: "G-CHXLDR4X8F",
 };
 
+// production
+// const firebaseConfig = {
+//   apiKey: "AIzaSyCA2XNsLPvQJ8v7Au1NV6Lq9IbpkDvvot8",
+//   authDomain: "lumix-p.firebaseapp.com",
+//   projectId: "lumix-p",
+//   storageBucket: "lumix-p.appspot.com",
+//   messagingSenderId: "72870788708",
+//   appId: "1:72870788708:web:b51240ffd1b4a1a0566971",
+//   measurementId: "G-6EEXK7CTL1",
+// };
+
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 
@@ -50,8 +62,8 @@ export const auth = getAuth(app);
 export const storage = getStorage(app);
 export const functions = getFunctions(app);
 
-export const colRef = (_colPath) => {
-  return collection(db, _colPath);
+export const colRef = (_colPath, isGroup = false) => {
+  return isGroup ? collectionGroup(db, _colPath) : collection(db, _colPath);
 };
 
 export const checkExistingEmail = async (email) => {

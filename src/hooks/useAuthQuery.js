@@ -9,7 +9,7 @@ export const useAuthQuery = () => {
       }
     },
     onError(error) {
-      console.log(error);
+      // console.log(error);
       console.error("Failed to subscribe to users authentication state!");
     },
     select: (user) => {
