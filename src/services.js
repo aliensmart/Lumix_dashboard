@@ -33,26 +33,26 @@ import {
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-export const firebaseConfig = {
-  apiKey: "AIzaSyCTrUfspNgDUR3J2bjVQ90eiR7H0DT_2cU",
-  authDomain: "lumix-91314.firebaseapp.com",
-  projectId: "lumix-91314",
-  storageBucket: "lumix-91314.appspot.com",
-  messagingSenderId: "1056319810172",
-  appId: "1:1056319810172:web:6122b0cfa5a13904b9b7f9",
-  measurementId: "G-CHXLDR4X8F",
-};
+// export const firebaseConfig = {
+//   apiKey: "AIzaSyCTrUfspNgDUR3J2bjVQ90eiR7H0DT_2cU",
+//   authDomain: "lumix-91314.firebaseapp.com",
+//   projectId: "lumix-91314",
+//   storageBucket: "lumix-91314.appspot.com",
+//   messagingSenderId: "1056319810172",
+//   appId: "1:1056319810172:web:6122b0cfa5a13904b9b7f9",
+//   measurementId: "G-CHXLDR4X8F",
+// };
 
 // production
-// const firebaseConfig = {
-//   apiKey: "AIzaSyCA2XNsLPvQJ8v7Au1NV6Lq9IbpkDvvot8",
-//   authDomain: "lumix-p.firebaseapp.com",
-//   projectId: "lumix-p",
-//   storageBucket: "lumix-p.appspot.com",
-//   messagingSenderId: "72870788708",
-//   appId: "1:72870788708:web:b51240ffd1b4a1a0566971",
-//   measurementId: "G-6EEXK7CTL1",
-// };
+const firebaseConfig = {
+  apiKey: "AIzaSyCA2XNsLPvQJ8v7Au1NV6Lq9IbpkDvvot8",
+  authDomain: "lumix-p.firebaseapp.com",
+  projectId: "lumix-p",
+  storageBucket: "lumix-p.appspot.com",
+  messagingSenderId: "72870788708",
+  appId: "1:72870788708:web:b51240ffd1b4a1a0566971",
+  measurementId: "G-6EEXK7CTL1",
+};
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
