@@ -90,7 +90,7 @@ const AdminsList = ({ admins }) => {
     },
     {
       name: "status",
-      label: "ROLE",
+      label: "Status",
       options: {
         filter: true,
         sort: true,
