@@ -109,14 +109,14 @@ const Contact = () => {
               <a href="mailto:aide@cash-lumiere.com">aide@cash-lumiere.com</a>
             </p>
             <p>Notre Numero de tel:</p>
-            <p>+225-01-70-50-60-99</p>
+            <p>+225-07-11-06-12-35</p>
             <p>+225-27-21-54-07-00</p>
           </div>
         </div>
         <div className="contact__container--links">
           <a href="/terms">Nos termes et conditions</a>
           <a href="/privacy-policy" className="contact__container--content_btn">
-            Notre politique de confidentialiter{" "}
+            Notre politique de confidentialité{" "}
           </a>
         </div>
         <ToastContainer />
