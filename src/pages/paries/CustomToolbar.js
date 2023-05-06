@@ -21,6 +21,7 @@ const CustomToolbar = ({ played, parieId, setIsPlay, beters }) => {
   };
   const onDelete = () => {
     deleteDoc(docRef(`/bets/${parieId}`));
+    handleClose();
   };
   const onPlay = () => addOrUpdate(`/bets/${parieId}`, { played: true });
   return (
@@ -46,9 +47,11 @@ const CustomToolbar = ({ played, parieId, setIsPlay, beters }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      {!played && <Button onClick={() => setIsPlay(true)}>Jouer</Button>}
+      {!played && beters > 0 && (
+        <Button onClick={() => setIsPlay(true)}>Jouer</Button>
+      )}
 
-      {!played && beters.length <= 0 && (
+      {!played && beters <= 0 && (
         <Button onClick={handleClickOpen}>Supprimer</Button>
       )}
     </div>

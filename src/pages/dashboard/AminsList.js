@@ -90,7 +90,7 @@ const AdminsList = ({ admins }) => {
     },
     {
       name: "status",
-      label: "ROLE",
+      label: "Status",
       options: {
         filter: true,
         sort: true,
@@ -107,12 +107,14 @@ const AdminsList = ({ admins }) => {
           const transferRef = admins.find(
             (data) => data.id === tableMeta.rowData[0]
           )?.ref;
+
           return (
             <select
               value={role?.value}
               onChange={(e) => {
                 e.stopPropagation();
                 updateValue(e.target.value);
+                const userRef = docReference(transferRef?.parent?.parent?.path);
                 updateDoc(userRef, {
                   approvedTransfer: increment(tableMeta.rowData[2]),
                   availableAmount: increment(-tableMeta.rowData[2]),
@@ -120,7 +122,6 @@ const AdminsList = ({ admins }) => {
                 updateDoc(transferRef, {
                   status: e.target.value,
                 });
-                const userRef = docReference(transferRef?.parent?.parent?.path);
                 // add approvedTransfer with increased amount to the lumix data and decrease the available amount
                 updateDoc(docReference("/lumixData/nLUpoDEbLI0jaxcSJ7oG"), {
                   approvedTransfer: increment(tableMeta.rowData[2]),
