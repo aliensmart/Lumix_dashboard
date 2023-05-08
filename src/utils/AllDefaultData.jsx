@@ -9,7 +9,7 @@ export const BET = {
   betsCount: 0,
   endsOn: null,
   isSuffling: true,
-  minBet: 500,
+  minBet: 200,
   played: false,
   startsOn: null,
   status: "ONGOING",
